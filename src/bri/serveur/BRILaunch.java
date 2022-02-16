@@ -8,7 +8,6 @@ import bri.serveur.apps.AppProgrammeur;
 public class BRILaunch 
 {
     private static ArrayList<IApp> apps = new ArrayList<>();
-    private static ArrayList<Thread> threads = new ArrayList<>();
 
     private static void ajouter_app(IApp app)
     {

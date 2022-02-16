@@ -2,6 +2,7 @@ package bri.serveur.apps;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import bri.serveur.Console;
 import bri.serveur.IApp;
@@ -20,6 +21,17 @@ public abstract class App implements IApp
         Console.afficher(this, "Application démarrée.");
     }
 
+    public boolean accepter_client;
+    @Override
+    public boolean accepter_client() { return accepter_client; }
+
+    protected abstract void nouvelle_connexion(Socket connexion);
+
+    protected App()
+    {
+        this.thread = null;
+        this.accepter_client = false;
+    }
 
     @Override
     public final void run()
@@ -27,10 +39,17 @@ public abstract class App implements IApp
         try
         {
             ServerSocket connexion = new ServerSocket(this.port());
-            Console.afficher(this, "Connexion ouverte sur le port " + this.port() + ".");
+            this.accepter_client = true;
+            Console.afficher(this, "Application ouverte sur le port " + this.port() + ".");
             
+            while (this.accepter_client)
+            {
+                this.nouvelle_connexion(connexion.accept());
+                Console.afficher(this, "Nouvelle connexion.");
+            }
+
             connexion.close();
-            Console.afficher(this, "Connexion fermée.");
+            Console.afficher(this, "Application fermée.");
         }
         catch (IOException e)
         {
