@@ -1,10 +1,9 @@
 package bri.client;
 
+import bri.IBRI;
 import bri.client.mode.IAction;
 
-public interface IMode
+public interface IMode extends IBRI
 {
-    public String nom();
-    public int port();
     public IAction choisir_action();
 }

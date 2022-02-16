@@ -6,7 +6,7 @@ public class Amateur extends Mode
 {
     public Amateur()
     {
-        super("Amateur", AppAmateur.PORT);
+        super(AppAmateur.NOM, AppAmateur.PORT);
     }
 
     @Override

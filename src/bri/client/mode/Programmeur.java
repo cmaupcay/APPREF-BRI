@@ -6,7 +6,7 @@ public class Programmeur extends Mode
 {
     public Programmeur()
     {
-        super("Programmeur", AppProgrammeur.PORT);
+        super(AppProgrammeur.NOM, AppProgrammeur.PORT);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package bri.serveur;
 
-public interface IApp extends Runnable
+import bri.IBRI;
+
+public interface IApp extends Runnable, IBRI
 {
-    public int port();
+    public Thread thread();
+    public void demarrer();
 }
