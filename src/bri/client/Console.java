@@ -27,4 +27,16 @@ public abstract class Console
         if (ligne) return entree.nextLine();
         return entree.next();
     }
+
+    public static final int choisir(Object[] tableau, final String message)
+    {
+        Console.afficher(message);
+        for (int e = 0; e < tableau.length; e++) 
+            Console.sortie.println("\t# " + e + " - " + tableau[e]);
+        Console.sortie.println("");
+        Console.afficher_message_demande("");
+        final int i = Console.entree.nextInt();
+        if (i >= tableau.length) return choisir(tableau, message);
+        return i;
+    }
 }

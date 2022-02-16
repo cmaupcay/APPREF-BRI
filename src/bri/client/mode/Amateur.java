@@ -1,18 +1,16 @@
 package bri.client.mode;
 
-import bri.client.IMode;
 import bri.serveur.apps.AppAmateur;
 
-public class Amateur implements IMode
+public class Amateur extends Mode
 {
-    @Override
-    public final String nom() { return "Amateur"; }
+    public Amateur()
+    {
+        super("Amateur", AppAmateur.PORT);
+    }
 
     @Override
-    public final int port() { return AppAmateur.PORT; }
-
-    @Override
-    public final void lancer()
+    protected final void charger_actions()
     {
         
     }

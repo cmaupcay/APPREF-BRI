@@ -1,18 +1,16 @@
 package bri.client.mode;
 
-import bri.client.IMode;
 import bri.serveur.apps.AppProgrammeur;
 
-public class Programmeur implements IMode
+public class Programmeur extends Mode
 {
-    @Override
-    public final String nom() { return "Programmeur"; }
+    public Programmeur()
+    {
+        super("Programmeur", AppProgrammeur.PORT);
+    }
 
     @Override
-    public final int port() { return AppProgrammeur.PORT; }
-
-    @Override
-    public final void lancer()
+    protected final void charger_actions()
     {
         
     }
