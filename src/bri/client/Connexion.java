@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class Connexion 
 {
@@ -35,5 +36,43 @@ public class Connexion
     { 
         this.sortie.println(message);
         this.sortie.flush();
+    }
+
+    // TABLEAU
+    public static final String TABLEAU = "@TAB";
+    public final String[] lire_tableau() throws IOException
+    {
+        String tmp = this.lire();
+        if (tmp.equals(TABLEAU))
+        {
+            try
+            {
+                final int n = Integer.parseInt(this.lire());
+                String[] tableau = new String[n];
+                for (int o = 0; o < n; o++)
+                    tableau[o] = this.lire();
+                return tableau;
+            }
+            catch (NumberFormatException e) {}
+        }
+        return new String[]{ tmp };
+    }
+    public void ecrire(final Object[] tableau)
+    {
+        this.sortie.println(TABLEAU);
+        this.sortie.println(tableau.length);
+        for (int o = 0; o < tableau.length; o++)
+            this.sortie.println(tableau[o]);
+        this.sortie.flush();
+    }
+
+    // DEMANDE
+    public static final String DEMANDE = "@DEM";
+    public final String demander(final String message) throws IOException
+    {
+        this.sortie.println(DEMANDE);
+        this.sortie.println(message);
+        this.sortie.flush();
+        return this.lire();
     }
 }

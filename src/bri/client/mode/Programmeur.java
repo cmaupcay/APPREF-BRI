@@ -16,19 +16,27 @@ public class Programmeur extends Mode
     @Override
     public final boolean accepter_connexion(Connexion connexion) 
     {
-        final String pseudo = Console.demander("", "Utilisateur : ", false);
-        connexion.ecrire(pseudo);
-        connexion.ecrire(Console.demander("", "Mot de passe : ", false) + "\n");
         try 
         { 
-            if (connexion.lire().equals(Connexion.VRAI))
+            final String pseudo = repondre_a_demande(connexion);    // Pseudo
+            if (connexion.lire().equals(Connexion.VRAI))            // Le pseudo existe
             {
-                Console.afficher("Bienvenue " + pseudo + " !");
-                return true;
+                Console.modifier_utilisateur(pseudo);
+                while (connexion.ouverte())
+                {
+                    repondre_a_demande(connexion);                  // Mot de passe
+                    if (connexion.lire().equals(Connexion.VRAI))
+                    {
+                        Console.afficher("Bienvenue " + pseudo + " !");
+                        return true;
+                    }
+                    else Console.afficher("ERREUR : Mot de passe incorrect.");
+                }
+                return false;
             }
-            else
+            else                                                    // Connexion refusée
             {
-                Console.afficher("ERREUR : Identifiants incorrects.");
+                Console.afficher("ERREUR : Utilisateur inconnu.");
                 return this.accepter_connexion(connexion);
             }
         }
@@ -39,6 +47,6 @@ public class Programmeur extends Mode
     @Override
     protected final void charger_actions()
     {
-        
+
     }
 }

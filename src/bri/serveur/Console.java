@@ -1,6 +1,8 @@
 package bri.serveur;
 
-public abstract class Console 
+import bri.IBRI;
+
+public abstract class Console
 {
     private static final String PREFIX = " [BRI] ";
 
@@ -10,6 +12,6 @@ public abstract class Console
         else System.out.print(PREFIX + message);
     }
     public static void afficher(final String message) { afficher(message, true); }
-    public static void afficher(final IApp app, final String message)
-    { afficher("<" + app.nom() + ">\t" + message); }
+    public static void afficher(final IBRI objet, final String message)
+    { afficher("<" + objet.nom() + ">\t" + message); }
 }

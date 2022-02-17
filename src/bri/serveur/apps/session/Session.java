@@ -8,6 +8,8 @@ import bri.serveur.apps.ISession;
 public abstract class Session implements ISession
 {
     private Thread thread;
+    @Override
+    public Thread thread() { return this.thread; }
     private Connexion connexion;
     protected Connexion connexion() { return this.connexion; }
 

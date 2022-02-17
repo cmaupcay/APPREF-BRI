@@ -7,17 +7,37 @@ import bri.serveur.Console;
 
 public class AuthProgrammeur extends Session
 {
+    private static final int TENTATIVES_MAX = 3;
+
+    private final boolean verifier_pseudo(final String pseudo)
+    {
+        return true;
+    }
+    private final boolean verifier_mdp(final String pseudo, final String mdp)
+    {
+        return true;
+    }
+
     @Override
     public final void run()
     {
         try
         {
-            final String pseudo = this.connexion().lire();
-            final String mdp = this.connexion().lire();
-            if (pseudo.equals("tensaiji") && mdp.equals("ok"))
+            final String pseudo = this.connexion().demander("Utilisateur : ");
+            if (this.verifier_pseudo(pseudo))
+            {
                 this.connexion().ecrire(Connexion.VRAI);
-            else this.connexion().ecrire(Connexion.FAUX);
-            this.connexion().fermer();
+                int tentatives = 0;
+                if (this.verifier_mdp(pseudo, this.connexion().demander("Mot de passe : ")))
+                {
+                    this.connexion().ecrire(Connexion.VRAI);
+                }
+                else
+                {
+                    this.connexion().ecrire(Connexion.FAUX);
+                    if (++tentatives >= TENTATIVES_MAX) this.connexion().fermer();
+                }
+            }
         }
         catch (IOException e)
         {

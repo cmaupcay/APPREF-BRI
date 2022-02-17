@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 import bri.client.mode.Amateur;
 import bri.client.mode.IAction;
@@ -20,11 +21,22 @@ public class Client
         modes.add(new Programmeur());
     }
 
+    private static final IMode choisir_mode()
+    {
+        try { return modes.get(Console.choisir(modes.toArray(), "Choisissez le mode à utiliser : ")); }
+        catch (InputMismatchException e) { return null; }
+    }
+
     public static final void main(String[] args)
     {
         Console.afficher("Bienvenue dans le client BRI !");
         charger_modes();
-        final IMode mode = modes.get(Console.choisir(modes.toArray(), "Choisissez le mode à utiliser : "));
+        final IMode mode = choisir_mode();
+        if (mode == null)
+        {
+            Console.afficher("ERREUR : Mode invalide.");
+            return;
+        }
 
         Connexion connexion = null;
         try 

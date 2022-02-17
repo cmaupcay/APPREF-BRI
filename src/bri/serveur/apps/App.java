@@ -70,6 +70,14 @@ public abstract class App implements IApp
                 }
             }
 
+            // Fermeture des sessions
+            for (ISession s : this.sessions)
+            {
+                try { s.thread().join();; }
+                catch (InterruptedException e)
+                { Console.afficher(this, "ERREUR : Session interrompue."); }
+            }
+
             connexion.close();
             Console.afficher(this, "Application fermée.");
         }
