@@ -32,6 +32,7 @@ public class Programmeur extends Mode
                     }
                     else Console.afficher("ERREUR : Mot de passe incorrect.");
                 }
+                Console.afficher("ERREUR : Vous avez été déconnecté.");
                 return false;
             }
             else                                                    // Connexion refusée

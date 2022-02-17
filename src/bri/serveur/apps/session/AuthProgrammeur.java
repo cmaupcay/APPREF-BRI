@@ -15,7 +15,7 @@ public class AuthProgrammeur extends Session
     }
     private final boolean verifier_mdp(final String pseudo, final String mdp)
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -28,15 +28,15 @@ public class AuthProgrammeur extends Session
             {
                 this.connexion().ecrire(Connexion.VRAI);
                 int tentatives = 0;
-                if (this.verifier_mdp(pseudo, this.connexion().demander("Mot de passe : ")))
+                while (connexion().ouverte() && tentatives++ < TENTATIVES_MAX)
                 {
-                    this.connexion().ecrire(Connexion.VRAI);
+                    if (this.verifier_mdp(pseudo, this.connexion().demander("Mot de passe : ")))
+                    {
+                        this.connexion().ecrire(Connexion.VRAI);
+                    }
+                    else this.connexion().ecrire(Connexion.FAUX);
                 }
-                else
-                {
-                    this.connexion().ecrire(Connexion.FAUX);
-                    if (++tentatives >= TENTATIVES_MAX) this.connexion().fermer();
-                }
+                this.connexion().fermer();
             }
         }
         catch (IOException e)

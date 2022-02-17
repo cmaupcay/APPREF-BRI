@@ -1,6 +1,8 @@
 package bri.service;
 
-public abstract class Service 
+import bri.serveur.apps.IService;
+
+public abstract class Service implements IService
 {
     
 }
