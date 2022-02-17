@@ -1,6 +1,9 @@
 package bri.serveur.apps;
 
-import java.net.Socket;
+import java.io.IOException;
+
+import bri.client.Connexion;
+import bri.serveur.apps.session.AuthProgrammeur;
 
 public class AppProgrammeur extends App
 {
@@ -12,8 +15,8 @@ public class AppProgrammeur extends App
     public final int port() { return PORT; }
 
     @Override
-    public final void nouvelle_connexion(Socket connexion)
+    public final ISession nouvelle_session(Connexion connexion) throws IOException
     {
-        
+        return new AuthProgrammeur();
     }
 }

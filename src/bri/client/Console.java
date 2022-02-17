@@ -1,6 +1,7 @@
 package bri.client;
 
 import java.io.PrintStream;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class Console 
@@ -18,12 +19,14 @@ public abstract class Console
     }
     public static void afficher(final String message) { afficher(message, true); }
 
-    public static void afficher_message_demande(final String utilisateur_courant)
-    { sortie.print((utilisateur_courant == "" ? UTILISATEUR_PAR_DEFAUT : utilisateur_courant) + '@' + PREFIX); }
-
-    public static final String demander(final String utilisateur_courant, final boolean ligne)
+    public static void afficher_message_demande(final String utilisateur_courant, final String message)
     {
-        afficher_message_demande(utilisateur_courant);
+        sortie.print((utilisateur_courant == "" ? UTILISATEUR_PAR_DEFAUT : utilisateur_courant) + '@' + PREFIX + message);
+    }
+
+    public static final String demander(final String utilisateur_courant, final String message, final boolean ligne)
+    {
+        afficher_message_demande(utilisateur_courant, message);
         if (ligne) return entree.nextLine();
         return entree.next();
     }
@@ -34,9 +37,14 @@ public abstract class Console
         for (int e = 0; e < tableau.length; e++) 
             Console.sortie.println("\t# " + e + " - " + tableau[e]);
         Console.sortie.println("");
-        Console.afficher_message_demande("");
-        final int i = Console.entree.nextInt();
-        if (i >= tableau.length) return choisir(tableau, message);
-        return i;
+        Console.afficher_message_demande("", "");
+        // TODO Bug quand on rentre n'importe quoi
+        try 
+        { 
+            final int i = Console.entree.nextInt();
+            if (i >= tableau.length) return choisir(tableau, message);
+            return i;
+        }
+        catch (InputMismatchException e) { return choisir(tableau, message); }
     }
 }

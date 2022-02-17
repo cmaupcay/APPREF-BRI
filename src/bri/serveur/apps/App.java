@@ -3,7 +3,9 @@ package bri.serveur.apps;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import bri.client.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IApp;
 
@@ -21,16 +23,18 @@ public abstract class App implements IApp
         Console.afficher(this, "Application démarrée.");
     }
 
-    public boolean accepter_client;
+    protected ArrayList<ISession> sessions;
+    public boolean accepter_nouvelle_connexion;
     @Override
-    public boolean accepter_client() { return accepter_client; }
+    public boolean accepter_nouvelle_connexion() { return accepter_nouvelle_connexion; }
 
-    protected abstract void nouvelle_connexion(Socket connexion);
+    protected abstract ISession nouvelle_session(Connexion connexion) throws IOException;
 
     protected App()
     {
         this.thread = null;
-        this.accepter_client = false;
+        this.sessions = new ArrayList<>();
+        this.accepter_nouvelle_connexion = false;
     }
 
     @Override
@@ -39,13 +43,31 @@ public abstract class App implements IApp
         try
         {
             ServerSocket connexion = new ServerSocket(this.port());
-            this.accepter_client = true;
+            this.accepter_nouvelle_connexion = true;
             Console.afficher(this, "Application ouverte sur le port " + this.port() + ".");
             
-            while (this.accepter_client)
+            Socket socket = null;
+            Connexion nouvelle_connexion = null;
+            ISession session = null;
+            while (this.accepter_nouvelle_connexion)
             {
-                this.nouvelle_connexion(connexion.accept());
-                Console.afficher(this, "Nouvelle connexion.");
+                socket = connexion.accept();
+                nouvelle_connexion = new Connexion(socket);
+                Console.afficher(this, "Nouvelle connexion. Création de la session...");
+                try 
+                { 
+                    session = this.nouvelle_session(nouvelle_connexion);
+                    session.initialiser(nouvelle_connexion);
+                    this.sessions.add(session);
+                    Console.afficher(this, "Session ouverte.");
+                }
+                catch (IOException e)
+                { 
+                    Console.afficher(this, "ERREUR : Impossible de créer la session.");
+                    socket.close();
+                    socket = null;
+                    nouvelle_connexion = null;
+                }
             }
 
             connexion.close();
@@ -53,7 +75,7 @@ public abstract class App implements IApp
         }
         catch (IOException e)
         {
-            Console.afficher(this, "Impossible d'ouvrir la connexion sur le port " + this.port() + ".");
+            Console.afficher(this, "ERREUR : Impossible d'ouvrir la connexion sur le port " + this.port() + ".");
         }
     }
 }

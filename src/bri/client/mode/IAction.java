@@ -1,10 +1,9 @@
 package bri.client.mode;
 
-import java.net.Socket;
-
+import bri.client.Connexion;
 
 public interface IAction
 {
     public String nom();
-    public void executer(Socket connexion);
+    public void executer(Connexion connexion);
 }
