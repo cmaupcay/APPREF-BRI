@@ -3,7 +3,7 @@ package bri.serveur.apps;
 import java.io.IOException;
 
 import bri.client.Connexion;
-import bri.serveur.apps.session.AuthProgrammeur;
+import bri.serveur.apps.session.Programmeur;
 
 public class AppProgrammeur extends App
 {
@@ -16,7 +16,5 @@ public class AppProgrammeur extends App
 
     @Override
     public final ISession nouvelle_session(Connexion connexion) throws IOException
-    {
-        return new AuthProgrammeur();
-    }
+    { return new Programmeur(); }
 }

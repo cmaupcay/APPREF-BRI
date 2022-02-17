@@ -44,10 +44,4 @@ public class Programmeur extends Mode
         catch (IOException e)
         { return false; }
     }
-
-    @Override
-    protected final void charger_actions()
-    {
-
-    }
 }

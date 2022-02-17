@@ -5,17 +5,19 @@ import java.io.IOException;
 import bri.client.Connexion;
 import bri.serveur.Console;
 
-public class AuthProgrammeur extends Session
+public class Programmeur extends Session
 {
     private static final int TENTATIVES_MAX = 3;
 
     private final boolean verifier_pseudo(final String pseudo)
     {
+        // TODO Vérification de l'existence d'un utilisateur
         return true;
     }
     private final boolean verifier_mdp(final String pseudo, final String mdp)
     {
-        return false;
+        // TODO Vérification du mot de passe d'un utilisateur
+        return true;
     }
 
     @Override
@@ -32,7 +34,9 @@ public class AuthProgrammeur extends Session
                 {
                     if (this.verifier_mdp(pseudo, this.connexion().demander("Mot de passe : ")))
                     {
+                        tentatives = TENTATIVES_MAX;
                         this.connexion().ecrire(Connexion.VRAI);
+                        
                     }
                     else this.connexion().ecrire(Connexion.FAUX);
                 }

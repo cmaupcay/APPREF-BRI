@@ -16,7 +16,5 @@ public class AppAmateur extends App
 
     @Override
     public final ISession nouvelle_session(Connexion connexion) throws IOException
-    {
-        return new Amateur();
-    }
+    { return new Amateur(); }
 }

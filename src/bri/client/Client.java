@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 import bri.client.mode.Amateur;
-import bri.client.mode.IAction;
 import bri.client.mode.Programmeur;
 
 public class Client 
@@ -34,7 +33,7 @@ public class Client
         final IMode mode = choisir_mode();
         if (mode == null)
         {
-            Console.afficher("ERREUR : Mode invalide.");
+            Console.afficher("ERREUR : Saisie invalide.");
             return;
         }
 
@@ -44,14 +43,28 @@ public class Client
             connexion = new Connexion(new Socket(SERVEUR, mode.port()));
             if (mode.accepter_connexion(connexion))
             {
-                final IAction action = mode.choisir_action();
-                action.executer(connexion);
+                String[] elements;
+                int index;
+                while (connexion.ouverte() && connexion.lire().equals(Connexion.DEMANDE))
+                {
+                    elements = connexion.lire_tableau();
+                    try
+                    {
+                        index = Console.choisir(elements, connexion.lire());
+                        connexion.ecrire(String.valueOf(index));
+                    }
+                    catch (InputMismatchException e) 
+                    { 
+                        Console.afficher("ERREUR : Saisie invalide.");
+                        connexion.fermer();
+                    }
+                }
             }
-            connexion.fermer();
+            if (connexion.ouverte()) connexion.fermer();
         }
         catch (UnknownHostException e)
         { 
-            Console.afficher("ERREUR : Impossible de résoudre le  nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ").");
+            Console.afficher("ERREUR : Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ").");
             return;
         }
         catch (IOException e)

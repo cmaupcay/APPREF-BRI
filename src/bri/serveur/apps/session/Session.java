@@ -13,12 +13,6 @@ public abstract class Session implements ISession
     private Connexion connexion;
     protected Connexion connexion() { return this.connexion; }
 
-    protected Session()
-    {
-        this.thread = null;
-        this.connexion = null;
-    }
-
     @Override
     public void fermer() throws IOException { this.connexion.fermer(); }
 

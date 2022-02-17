@@ -24,7 +24,7 @@ public class Connexion
         else throw new IOException("La connexion n'est pas ouverte.");
     }
 
-    public final boolean ouverte() { return this.connexion.isConnected(); }
+    public final boolean ouverte() { return !this.connexion.isClosed(); }
     public final void fermer() throws IOException { this.connexion.close(); }
 
     public static final String VRAI = "1";
@@ -74,5 +74,15 @@ public class Connexion
         this.sortie.println(message);
         this.sortie.flush();
         return this.lire();
+    }
+    public final int demander_choix(final Object[] tableau, final String message) throws IOException, IndexOutOfBoundsException
+    {
+        this.sortie.println(DEMANDE);
+        this.ecrire(tableau);
+        this.sortie.println(message);
+        this.sortie.flush();
+        final int i = Integer.parseInt(this.lire());
+        if (i >= tableau.length) throw new IndexOutOfBoundsException("Choix invalide.");
+        return i;
     }
 }
