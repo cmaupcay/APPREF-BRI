@@ -2,7 +2,7 @@ package bri.serveur.apps;
 
 import java.io.IOException;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.apps.session.SessionAmateur;
 
 public class AppAmateur extends App

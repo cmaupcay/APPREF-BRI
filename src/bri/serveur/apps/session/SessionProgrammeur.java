@@ -1,8 +1,9 @@
 package bri.serveur.apps.session;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.BRILaunch;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
@@ -21,7 +22,8 @@ public class SessionProgrammeur extends Session
 
     private final boolean verifier_pseudo(final String pseudo)
     {
-        for (IUtilisateur u : BRILaunch.UTILISATEURS)
+        ArrayList<IUtilisateur> utilisateurs = BRILaunch.utilisateurs();
+        for (IUtilisateur u : utilisateurs)
         {
             if (u.type().equals(Programmeur.TYPE)
             &&  u.pseudo().equals(pseudo))
@@ -80,7 +82,7 @@ public class SessionProgrammeur extends Session
                     }
                     else
                     {
-                        Console.afficher(this.parent(), "Tentative de connexion : " + pseudo + '(' + tentatives + '/' + TENTATIVES_MAX + ").");
+                        Console.afficher(this.parent(), "Tentative de connexion : " + pseudo + " (" + tentatives + '/' + TENTATIVES_MAX + ").");
                         this.connexion().ecrire(Connexion.FAUX);
                     }
                 }

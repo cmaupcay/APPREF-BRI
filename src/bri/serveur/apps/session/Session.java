@@ -3,7 +3,7 @@ package bri.serveur.apps.session;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IApp;
 import bri.serveur.apps.ISession;

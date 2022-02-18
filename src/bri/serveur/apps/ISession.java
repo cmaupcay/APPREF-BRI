@@ -1,7 +1,7 @@
 package bri.serveur.apps;
 
 import java.io.IOException;
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.IApp;
 
 public interface ISession extends Runnable

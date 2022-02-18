@@ -16,9 +16,16 @@ public class BRILaunch
         Console.afficher(app, "Application serveur ajoutée !");
     }
 
-    public static final IUtilisateur[] UTILISATEURS = {
-        new Programmeur("admin", "admin")
-    };
+    private static final ArrayList<IUtilisateur> utilisateurs = new ArrayList<>();
+    public static final  ArrayList<IUtilisateur> utilisateurs() { return utilisateurs; }
+    public static boolean ajouter_utilisateur(IUtilisateur utilisateur)
+    {
+        for (IUtilisateur u : utilisateurs)
+            if (u.pseudo().equals(utilisateur.pseudo())) return false;
+        utilisateurs.add(utilisateur);
+        Console.afficher("Nouvel utilisateur : " + utilisateur.pseudo() + " (" + utilisateur.type() + ").");
+        return true;
+    }
 
     public static final void main(String[] args)
     {
@@ -27,10 +34,11 @@ public class BRILaunch
         ajouter_app(new AppAmateur());
         ajouter_app(new AppProgrammeur());
 
+        ajouter_utilisateur(new Programmeur("admin", "admin", "localhost:21"));
+
         // Démarrage des applications dans des threads dédiés
         Console.afficher("Démarrage des applications serveurs...");
-        for (IApp app : apps)
-            app.demarrer();
+        for (IApp app : apps) app.demarrer();
 
         Console.afficher("Serveur BRI démarré.");
 

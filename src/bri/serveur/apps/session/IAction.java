@@ -1,6 +1,6 @@
 package bri.serveur.apps.session;
 
-import bri.client.Connexion;
+import bri.Connexion;
 
 public interface IAction 
 {

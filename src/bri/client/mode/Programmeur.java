@@ -2,7 +2,7 @@ package bri.client.mode;
 
 import java.io.IOException;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.client.Console;
 import bri.serveur.apps.AppProgrammeur;
 

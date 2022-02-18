@@ -1,6 +1,6 @@
 package bri.serveur.apps.session.actions;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.apps.ISession;
 
 public class ChangerAdresseFTP extends Action

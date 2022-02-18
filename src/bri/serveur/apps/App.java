@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import bri.client.Connexion;
+import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IApp;
 

@@ -1,7 +1,6 @@
 package bri.client;
 
 import java.io.PrintStream;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class Console

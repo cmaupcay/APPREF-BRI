@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
+import bri.Connexion;
 import bri.client.mode.Amateur;
 import bri.client.mode.Programmeur;
 
@@ -71,13 +71,19 @@ public class Client
             connexion = new Connexion(new Socket(SERVEUR, mode.port()));
             if (mode.accepter_connexion(connexion))
             {
-                try
+                String tmp = "";
+                while ((tmp = connexion.lire()) != null)
                 {
-                    while (connexion.lire().equals(Connexion.DEMANDE))
-                    if (!repondre_aux_demandes(connexion)) break;
+                    try
+                    {
+                        if (tmp.equals(Connexion.DEMANDE))
+                        { if (!repondre_aux_demandes(connexion)) break; }
+                        else Console.afficher(tmp);
+                    }
+                    catch (NullPointerException e)
+                    { Console.afficher("ERREUR : La connexion a été fermée par le serveur."); }
+                    
                 }
-                catch (NullPointerException e)
-                { Console.afficher("ERREUR : La connexion a été fermée par le serveur."); }
             }
             else Console.afficher("ERREUR : Connexion refusée par le mode.");
             connexion.fermer();

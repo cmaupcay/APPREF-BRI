@@ -7,6 +7,13 @@ public class Programmeur extends Utilisateur
     @Override
     public final String type() { return TYPE; }
 
-    public Programmeur(final String pseudo, final String mdp)
-    { super(pseudo, mdp); }
+    public String ftp;
+    @Override
+    public final String ftp() { return this.ftp; }
+
+    public Programmeur(final String pseudo, final String mdp, final String ftp)
+    { 
+        super(pseudo, mdp);
+        this.ftp = ftp;
+    }
 }
