@@ -57,9 +57,8 @@ public abstract class App implements IApp
                 try 
                 { 
                     session = this.nouvelle_session(nouvelle_connexion);
-                    session.initialiser(nouvelle_connexion);
+                    session.initialiser(this, nouvelle_connexion);
                     this.sessions.add(session);
-                    Console.afficher(this, "Session ouverte.");
                 }
                 catch (IOException e)
                 { 

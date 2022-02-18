@@ -21,9 +21,42 @@ public class Client
     }
 
     private static final IMode choisir_mode()
+    { return modes.get(Console.choisir(modes.toArray(), "Choisissez le mode à utiliser : ")); }
+
+    private static final boolean repondre_aux_demandes(Connexion connexion)
     {
-        try { return modes.get(Console.choisir(modes.toArray(), "Choisissez le mode à utiliser : ")); }
-        catch (InputMismatchException e) { return null; }
+        String[] elements = null;
+        try { elements = connexion.lire_tableau(); }
+        catch (IOException e)
+        {
+            Console.afficher("ERREUR : Impossible de charger les éléments distants.");
+            return false;
+        }
+        String message = null;
+        try { message = connexion.lire(); }
+        catch (IOException e)
+        {
+            Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
+            return false;
+        }
+        int index = Console.choisir(elements, message);
+        connexion.ecrire(String.valueOf(index));
+        try { message = connexion.lire(); }
+        catch (IOException e)
+        {
+            Console.afficher("ERREUR : Impossible de lire la réponse du serveur.");
+            return false;
+        }
+        switch (message)
+        {
+        case Connexion.FAUX: // L'erreur n'est pas fatale
+            Console.afficher("ERREUR : Votre réponse a été refusée par le serveur.");
+        case Connexion.VRAI:
+            return true;
+        default:
+            Console.afficher("ERREUR : La réponse du serveur est incohérente : " + message);
+            return false;
+        }
     }
 
     public static final void main(String[] args)
@@ -31,11 +64,6 @@ public class Client
         Console.afficher("Bienvenue dans le client BRI !");
         charger_modes();
         final IMode mode = choisir_mode();
-        if (mode == null)
-        {
-            Console.afficher("ERREUR : Saisie invalide.");
-            return;
-        }
 
         Connexion connexion = null;
         try 
@@ -43,24 +71,11 @@ public class Client
             connexion = new Connexion(new Socket(SERVEUR, mode.port()));
             if (mode.accepter_connexion(connexion))
             {
-                String[] elements;
-                int index;
-                while (connexion.ouverte() && connexion.lire().equals(Connexion.DEMANDE))
-                {
-                    elements = connexion.lire_tableau();
-                    try
-                    {
-                        index = Console.choisir(elements, connexion.lire());
-                        connexion.ecrire(String.valueOf(index));
-                    }
-                    catch (InputMismatchException e) 
-                    { 
-                        Console.afficher("ERREUR : Saisie invalide.");
-                        connexion.fermer();
-                    }
-                }
+                while (connexion.lire().equals(Connexion.DEMANDE))
+                    if (!repondre_aux_demandes(connexion)) break;
             }
-            if (connexion.ouverte()) connexion.fermer();
+            else Console.afficher("ERREUR : Connexion refusée par le mode.");
+            connexion.fermer();
         }
         catch (UnknownHostException e)
         { 

@@ -81,8 +81,17 @@ public class Connexion
         this.ecrire(tableau);
         this.sortie.println(message);
         this.sortie.flush();
-        final int i = Integer.parseInt(this.lire());
-        if (i >= tableau.length) throw new IndexOutOfBoundsException("Choix invalide.");
+        int i = 0;
+        boolean valide = false;
+        while (!valide)
+        {
+            try 
+            {
+                i = Integer.parseInt(this.lire());
+                valide = true;
+            }
+            catch (NumberFormatException e) {}
+        }
         return i;
     }
 }

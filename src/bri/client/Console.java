@@ -34,15 +34,27 @@ public abstract class Console
         return entree.next();
     }
 
-    public static final int choisir(Object[] tableau, final String message) throws InputMismatchException
+    public static final int choisir(Object[] tableau, final String message)
     {
         Console.afficher(message);
         for (int e = 0; e < tableau.length; e++) 
             Console.sortie.println("\t# " + e + " - " + tableau[e]);
         Console.sortie.println("");
-        Console.afficher_message_demande("");
-        final int i = Console.entree.nextInt();
-        if (i >= tableau.length) return choisir(tableau, message);
+        Console.sortie.flush();
+        int i = 0;
+        boolean valide = false;
+        while (!valide)
+        {
+            Console.afficher_message_demande("");
+            try 
+            {
+                String ligne = ""; // Evite un rebouclage causé par une erreur de buffer d'entrée.
+                while (ligne.equals("")) ligne = Console.entree.nextLine();
+                i = Integer.parseInt(ligne);
+                valide = (i < tableau.length);
+            }
+            catch (NumberFormatException e) {}
+        }
         return i;
     }
 }

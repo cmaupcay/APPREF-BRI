@@ -1,6 +1,7 @@
 package bri.serveur.apps.session;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 
 import bri.client.Connexion;
 import bri.serveur.Console;
@@ -20,6 +21,22 @@ public class Programmeur extends Session
         return true;
     }
 
+    // TODO Faire des classes c'est plus simple
+    private static String[] ACTIONS = 
+    {
+        "Ajouter un nouveau service",
+        "Mettre à jour un service",
+        "Démarrer/Arrêter un service",
+        "Supprimer un service",
+        "Changer votre adresse FTP",
+        "Quitter"
+    };
+
+    private final void executer_action(final int action)
+    {
+
+    }
+
     @Override
     public final void run()
     {
@@ -36,7 +53,22 @@ public class Programmeur extends Session
                     {
                         tentatives = TENTATIVES_MAX;
                         this.connexion().ecrire(Connexion.VRAI);
-                        
+                        int action;
+                        boolean continuer = true;
+                        while (this.connexion().ouverte() && continuer)
+                        {
+                            try
+                            {
+                                action = this.connexion().demander_choix(ACTIONS, "Que voulez-vous faire ?");
+                                if (action < ACTIONS.length)
+                                {
+                                    this.connexion().ecrire(Connexion.VRAI);
+                                    this.executer_action(action);
+                                }
+                                else this.connexion().ecrire(Connexion.FAUX);
+                            }
+                            catch (IndexOutOfBoundsException e) {}
+                        }
                     }
                     else this.connexion().ecrire(Connexion.FAUX);
                 }
@@ -47,5 +79,6 @@ public class Programmeur extends Session
         {
             Console.afficher("ERREUR : Impossible de lire les informations de la connexion.");
         }
+        Console.afficher(this.parent(), "Session terminée.");
     }
 }
