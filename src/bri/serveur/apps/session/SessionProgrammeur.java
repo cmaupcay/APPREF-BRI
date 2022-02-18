@@ -4,15 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import bri.Connexion;
-import bri.serveur.BRILaunch;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
+import bri.serveur.Utilisateurs;
 import bri.serveur.apps.session.actions.AjoutService;
+import bri.serveur.apps.session.actions.AjoutUtilisateur;
 import bri.serveur.apps.session.actions.ChangerAdresseFTP;
 import bri.serveur.apps.session.actions.ControleService;
 import bri.serveur.apps.session.actions.MiseAJourService;
 import bri.serveur.apps.session.actions.Quitter;
 import bri.serveur.apps.session.actions.SuppressionService;
+import bri.serveur.apps.session.actions.SuppressionUtilisateur;
 import bri.serveur.utilisateurs.Programmeur;
 
 public class SessionProgrammeur extends Session
@@ -22,11 +24,10 @@ public class SessionProgrammeur extends Session
 
     private final boolean verifier_pseudo(final String pseudo)
     {
-        ArrayList<IUtilisateur> utilisateurs = BRILaunch.utilisateurs();
+        ArrayList<IUtilisateur> utilisateurs = Utilisateurs.liste();
         for (IUtilisateur u : utilisateurs)
         {
-            if (u.type().equals(Programmeur.TYPE)
-            &&  u.pseudo().equals(pseudo))
+            if (u.getClass() == Programmeur.class && u.pseudo().equals(pseudo))
             {
                 this.utilisateur = u;
                 return true;
@@ -44,6 +45,8 @@ public class SessionProgrammeur extends Session
         this.actions().add(new ControleService(this));
         this.actions().add(new SuppressionService(this));
         this.actions().add(new ChangerAdresseFTP(this));
+        this.actions().add(new AjoutUtilisateur(this));
+        this.actions().add(new SuppressionUtilisateur(this));
         this.actions().add(new Quitter(this));
     }
 

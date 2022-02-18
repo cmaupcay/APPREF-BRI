@@ -26,21 +26,29 @@ public class Client
     private static final boolean repondre_aux_demandes(Connexion connexion)
     {
         String[] elements = null;
+        String message = null;
         try { elements = connexion.lire_tableau(); }
         catch (IOException e)
         {
             Console.afficher("ERREUR : Impossible de charger les éléments distants.");
             return false;
         }
-        String message = null;
-        try { message = connexion.lire(); }
-        catch (IOException e)
+        if (elements == null)   // Demande d'une ligne
         {
-            Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
-            return false;
+            message = connexion.tampon();
+            connexion.ecrire(Console.demander(message, true));
         }
-        int index = Console.choisir(elements, message);
-        connexion.ecrire(String.valueOf(index));
+        else                    // Demande d'un index dans le tableau reçu
+        {
+            try { message = connexion.lire(); }
+            catch (IOException e)
+            {
+                Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
+                return false;
+            }
+            int index = Console.choisir(elements, message);
+            connexion.ecrire(String.valueOf(index));
+        }
         try { message = connexion.lire(); }
         catch (IOException e)
         {

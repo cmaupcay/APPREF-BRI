@@ -12,5 +12,9 @@ public class SuppressionService extends Action
 
     @Override
     public final boolean executer(Connexion connexion, String[] arguments)
-    { return false; }
+    {
+        // TODO Action de suppression d'un service
+        connexion.ecrire("ERREUR : Action non implémentée sur le serveur.");
+        return true;
+    }
 }

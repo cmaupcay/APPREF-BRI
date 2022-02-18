@@ -14,6 +14,7 @@ public class ChangerAdresseFTP extends Action
     public final boolean executer(Connexion connexion, String[] arguments)
     {
         // TODO Action de changement de l'adresse FTP 
-        return false;
+        connexion.ecrire("ERREUR : Action non implémentée sur le serveur.");
+        return true;
     }
 }

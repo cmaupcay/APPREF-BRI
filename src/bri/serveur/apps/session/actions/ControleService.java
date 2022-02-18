@@ -14,6 +14,7 @@ public class ControleService extends Action
     public final boolean executer(Connexion connexion, String[] arguments)
     {
         // TODO Action de controle des services 
-        return false;
+        connexion.ecrire("ERREUR : Action non implémentée sur le serveur.");
+        return true;
     }
 }

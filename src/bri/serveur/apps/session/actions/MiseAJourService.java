@@ -14,6 +14,7 @@ public class MiseAJourService extends Action
     public final boolean executer(Connexion connexion, String[] arguments)
     {
         // TODO Action de mise a jour d'un service 
-        return false;
+        connexion.ecrire("ERREUR : Action non implémentée sur le serveur.");
+        return true;
     }
 }

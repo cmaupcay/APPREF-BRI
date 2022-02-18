@@ -19,6 +19,7 @@ public class Connexion
             this.connexion = connexion;
             this.entree = new BufferedReader(new InputStreamReader(connexion.getInputStream()));
             this.sortie = new PrintWriter(connexion.getOutputStream());
+            this.tampon = "";
         }
         else throw new IOException("La connexion n'est pas ouverte.");
     }
@@ -30,19 +31,21 @@ public class Connexion
     public static final String FAUX = "0";
 
     public final String lire() throws IOException
-    { return this.entree.readLine(); }
+    { return (this.tampon = this.entree.readLine()); }
     public void ecrire(final String message)
     { 
         this.sortie.println(message);
         this.sortie.flush();
     }
 
+    private String tampon;
+    public final String tampon() { return this.tampon; }
+
     // TABLEAU
     public static final String TABLEAU = "@TAB";
     public final String[] lire_tableau() throws IOException
     {
-        String tmp = this.lire();
-        if (tmp.equals(TABLEAU))
+        if (this.lire().equals(TABLEAU))
         {
             try
             {
@@ -54,7 +57,7 @@ public class Connexion
             }
             catch (NumberFormatException e) {}
         }
-        return new String[]{ tmp };
+        return null;
     }
     public void ecrire(final Object[] tableau)
     {
