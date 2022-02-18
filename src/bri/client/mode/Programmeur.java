@@ -19,26 +19,37 @@ public class Programmeur extends Mode
         try 
         { 
             final String pseudo = repondre_a_demande(connexion);    // Pseudo
-            if (connexion.lire().equals(Connexion.VRAI))            // Le pseudo existe
+            String reponse = connexion.lire();
+            if (reponse.equals(Connexion.VRAI))            // Le pseudo existe
             {
                 Console.modifier_utilisateur(pseudo);
-                while (connexion.ouverte())
+                while (true)
                 {
                     repondre_a_demande(connexion);                  // Mot de passe
-                    if (connexion.lire().equals(Connexion.VRAI))
+                    reponse = connexion.lire();
+                    if (reponse.equals(Connexion.VRAI))
                     {
                         Console.afficher("Bienvenue " + pseudo + " !");
                         return true;
                     }
-                    else Console.afficher("ERREUR : Mot de passe incorrect.");
+                    else if (reponse.equals(Connexion.FAUX))
+                        Console.afficher("ERREUR : Mot de passe incorrect.");
+                    else
+                    {
+                        Console.afficher("ERREUR : Réponse incohérente du serveur : " + reponse);
+                        return false;
+                    }
                 }
-                Console.afficher("ERREUR : Vous avez été déconnecté.");
-                return false;
             }
-            else                                                    // Connexion refusée
+            else if (reponse.equals(Connexion.FAUX))                // Connexion refusée
             {
                 Console.afficher("ERREUR : Utilisateur inconnu.");
                 return this.accepter_connexion(connexion);
+            }
+            else
+            {
+                Console.afficher("ERREUR : Réponse incohérente du serveur : " + reponse);
+                return false;
             }
         }
         catch (IOException e)

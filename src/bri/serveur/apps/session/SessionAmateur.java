@@ -3,7 +3,7 @@ package bri.serveur.apps.session;
 
 import bri.serveur.Console;
 
-public class Amateur extends Session
+public class SessionAmateur extends Session
 {
     @Override
     public void run()

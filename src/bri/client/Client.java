@@ -71,21 +71,20 @@ public class Client
             connexion = new Connexion(new Socket(SERVEUR, mode.port()));
             if (mode.accepter_connexion(connexion))
             {
-                while (connexion.lire().equals(Connexion.DEMANDE))
+                try
+                {
+                    while (connexion.lire().equals(Connexion.DEMANDE))
                     if (!repondre_aux_demandes(connexion)) break;
+                }
+                catch (NullPointerException e)
+                { Console.afficher("ERREUR : La connexion a été fermée par le serveur."); }
             }
             else Console.afficher("ERREUR : Connexion refusée par le mode.");
             connexion.fermer();
         }
         catch (UnknownHostException e)
-        { 
-            Console.afficher("ERREUR : Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ").");
-            return;
-        }
+        { Console.afficher("ERREUR : Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
         catch (IOException e)
-        {
-            Console.afficher("ERREUR :Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); 
-            return;
-        }
+        { Console.afficher("ERREUR :Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
     }   
 }

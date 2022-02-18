@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import bri.serveur.apps.AppAmateur;
 import bri.serveur.apps.AppProgrammeur;
+import bri.serveur.utilisateurs.Programmeur;
 
 public class BRILaunch 
 {
@@ -14,6 +15,10 @@ public class BRILaunch
         apps.add(app);
         Console.afficher(app, "Application serveur ajoutée !");
     }
+
+    public static final IUtilisateur[] UTILISATEURS = {
+        new Programmeur("admin", "admin")
+    };
 
     public static final void main(String[] args)
     {

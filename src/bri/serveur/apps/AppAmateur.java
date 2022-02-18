@@ -3,7 +3,7 @@ package bri.serveur.apps;
 import java.io.IOException;
 
 import bri.client.Connexion;
-import bri.serveur.apps.session.Amateur;
+import bri.serveur.apps.session.SessionAmateur;
 
 public class AppAmateur extends App
 {
@@ -16,5 +16,5 @@ public class AppAmateur extends App
 
     @Override
     public final ISession nouvelle_session(Connexion connexion) throws IOException
-    { return new Amateur(); }
+    { return new SessionAmateur(); }
 }

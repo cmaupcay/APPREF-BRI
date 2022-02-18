@@ -75,7 +75,7 @@ public class Connexion
         this.sortie.flush();
         return this.lire();
     }
-    public final int demander_choix(final Object[] tableau, final String message) throws IOException, IndexOutOfBoundsException
+    public final int demander_choix(final Object[] tableau, final String message) throws IOException
     {
         this.sortie.println(DEMANDE);
         this.ecrire(tableau);
