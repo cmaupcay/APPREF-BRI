@@ -1,4 +1,4 @@
-package bri.serveur.apps.session;
+package bri.serveur.app.session;
 
 import bri.Connexion;
 

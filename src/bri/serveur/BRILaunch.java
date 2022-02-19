@@ -2,9 +2,9 @@ package bri.serveur;
 
 import java.util.ArrayList;
 
-import bri.serveur.apps.AppAmateur;
-import bri.serveur.apps.AppProgrammeur;
-import bri.serveur.utilisateurs.Programmeur;
+import bri.serveur.app.AppAmateur;
+import bri.serveur.app.AppProgrammeur;
+import bri.serveur.utilisateur.Programmeur;
 
 public class BRILaunch 
 {

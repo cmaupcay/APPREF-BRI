@@ -1,4 +1,4 @@
-package bri.serveur.apps.session;
+package bri.serveur.app.session;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IApp;
-import bri.serveur.apps.ISession;
+import bri.serveur.app.ISession;
 
 public abstract class Session implements ISession
 {

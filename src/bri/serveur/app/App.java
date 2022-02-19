@@ -1,4 +1,4 @@
-package bri.serveur.apps;
+package bri.serveur.app;
 
 import java.io.IOException;
 import java.net.ServerSocket;

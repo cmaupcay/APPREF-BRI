@@ -1,4 +1,4 @@
-package bri.serveur.apps.session;
+package bri.serveur.app.session;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,15 +7,15 @@ import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
-import bri.serveur.apps.session.actions.AjoutService;
-import bri.serveur.apps.session.actions.AjoutUtilisateur;
-import bri.serveur.apps.session.actions.ChangerAdresseFTP;
-import bri.serveur.apps.session.actions.ControleService;
-import bri.serveur.apps.session.actions.MiseAJourService;
-import bri.serveur.apps.session.actions.Quitter;
-import bri.serveur.apps.session.actions.SuppressionService;
-import bri.serveur.apps.session.actions.SuppressionUtilisateur;
-import bri.serveur.utilisateurs.Programmeur;
+import bri.serveur.app.session.actions.AjoutService;
+import bri.serveur.app.session.actions.AjoutUtilisateur;
+import bri.serveur.app.session.actions.ChangerAdresseFTP;
+import bri.serveur.app.session.actions.ControleService;
+import bri.serveur.app.session.actions.MiseAJourService;
+import bri.serveur.app.session.actions.Quitter;
+import bri.serveur.app.session.actions.SuppressionService;
+import bri.serveur.app.session.actions.SuppressionUtilisateur;
+import bri.serveur.utilisateur.Programmeur;
 
 public class SessionProgrammeur extends Session
 {

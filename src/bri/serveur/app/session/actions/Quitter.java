@@ -1,8 +1,8 @@
-package bri.serveur.apps.session.actions;
+package bri.serveur.app.session.actions;
 
 import bri.Connexion;
 import bri.serveur.Console;
-import bri.serveur.apps.ISession;
+import bri.serveur.app.ISession;
 
 public class Quitter extends Action
 {

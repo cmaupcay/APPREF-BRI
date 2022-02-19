@@ -1,4 +1,4 @@
-package bri.serveur.apps.session.actions;
+package bri.serveur.app.session.actions;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -8,9 +8,9 @@ import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
-import bri.serveur.apps.ISession;
-import bri.serveur.utilisateurs.Programmeur;
-import bri.serveur.utilisateurs.Utilisateur;
+import bri.serveur.app.ISession;
+import bri.serveur.utilisateur.Programmeur;
+import bri.serveur.utilisateur.Utilisateur;
 
 public class AjoutUtilisateur extends Action
 {

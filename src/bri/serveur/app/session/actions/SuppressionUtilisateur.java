@@ -1,10 +1,10 @@
-package bri.serveur.apps.session.actions;
+package bri.serveur.app.session.actions;
 
 import java.io.IOException;
 
 import bri.Connexion;
 import bri.serveur.Utilisateurs;
-import bri.serveur.apps.ISession;
+import bri.serveur.app.ISession;
 
 public class SuppressionUtilisateur extends Action
 {

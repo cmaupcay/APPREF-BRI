@@ -1,14 +1,14 @@
-package bri.serveur.apps;
+package bri.serveur.app;
 
 import java.io.IOException;
 
 import bri.Connexion;
-import bri.serveur.apps.session.SessionAmateur;
+import bri.serveur.app.session.SessionProgrammeur;
 
-public class AppAmateur extends App
+public class AppProgrammeur extends App
 {
-    public static final String NOM = "Amateur";
-    public static final int PORT = 7001;
+    public static final String NOM = "Programmeur";
+    public static final int PORT = 7000;
     @Override
     public final String nom() { return NOM; }
     @Override
@@ -16,5 +16,5 @@ public class AppAmateur extends App
 
     @Override
     public final ISession nouvelle_session(Connexion connexion) throws IOException
-    { return new SessionAmateur(); }
+    { return new SessionProgrammeur(); }
 }

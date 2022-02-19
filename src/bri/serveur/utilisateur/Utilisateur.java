@@ -1,10 +1,11 @@
-package bri.serveur.utilisateurs;
+package bri.serveur.utilisateur;
 
 import java.io.IOException;
 
 import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
+import bri.serveur.service.IServiceBRI;
 
 public class Utilisateur implements IUtilisateur
 {
@@ -18,6 +19,12 @@ public class Utilisateur implements IUtilisateur
 
     @Override
     public String ftp() { return null; }
+    @Override
+    public void modifier_ftp(final String ftp) {}
+
+    @Override
+    public Class<?> charger_service_distant(final String nom) throws ClassNotFoundException 
+    { return null; }
 
     public Utilisateur(final String pseudo, final String mdp)
     {

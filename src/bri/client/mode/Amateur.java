@@ -1,7 +1,7 @@
 package bri.client.mode;
 
 import bri.Connexion;
-import bri.serveur.apps.AppAmateur;
+import bri.serveur.app.AppAmateur;
 
 public class Amateur extends Mode
 {

@@ -1,7 +1,7 @@
-package bri.serveur.apps.session.actions;
+package bri.serveur.app.session.actions;
 
-import bri.serveur.apps.ISession;
-import bri.serveur.apps.session.IAction;
+import bri.serveur.app.ISession;
+import bri.serveur.app.session.IAction;
 
 public abstract class Action implements IAction
 {

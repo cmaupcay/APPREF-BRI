@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import bri.Connexion;
 import bri.client.Console;
-import bri.serveur.apps.AppProgrammeur;
+import bri.serveur.app.AppProgrammeur;
 
 public class Programmeur extends Mode
 {

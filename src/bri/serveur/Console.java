@@ -14,4 +14,6 @@ public abstract class Console
     public static void afficher(final String message) { afficher(message, true); }
     public static void afficher(final IBRI objet, final String message)
     { afficher("<" + objet.nom() + ">\t" + message); }
+    public static void afficher(final IService objet, final String message)
+    { afficher("<Service/" + objet.nom() + ">\t" + message); }
 }
