@@ -1,6 +1,12 @@
 package bri.serveur.app.session.actions;
 
+import java.io.IOException;
+
 import bri.Connexion;
+import bri.serveur.IService;
+import bri.serveur.IUtilisateur;
+import bri.serveur.Services;
+import bri.serveur.Utilisateurs;
 import bri.serveur.app.ISession;
 
 public class SuppressionService extends Action
@@ -13,8 +19,29 @@ public class SuppressionService extends Action
     @Override
     public final boolean executer(Connexion connexion, String[] arguments)
     {
-        // TODO Action de suppression d'un service
-        connexion.ecrire("ERREUR : Action non implémentée sur le serveur.");
-        return true;
+        try
+        {
+            if (arguments.length < 1) return false;
+            IUtilisateur auteur = Utilisateurs.utilisateur(arguments[0]);
+            if (auteur == null) return false;
+            final Object[] services = Services.services_publies(auteur).toArray();
+            final int s = connexion.demander_choix(services, "Quel service souhaitez-vous supprimer ?");
+            connexion.ecrire(Connexion.VRAI);
+            final IService service = (IService)services[s];
+            if (service.actif())
+            {
+                connexion.ecrire("ERREUR : Veuillez arrêter le service avant de le supprimer.");
+                return false;
+            }
+            if (!Services.supprimer(auteur, service.nom()))
+            {
+                connexion.ecrire("ERREUR : La suppression du service a échoué.");
+                return false;
+            }
+            connexion.ecrire("Service supprimé !");
+            return true;
+        }
+        catch (IOException e)
+        { return false; }
     }
 }

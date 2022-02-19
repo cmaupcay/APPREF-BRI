@@ -18,10 +18,7 @@ public class ChangerAdresseFTP extends Action
     public final boolean executer(Connexion connexion, String[] arguments)
     {
         if (arguments.length < 1) return false;
-        IUtilisateur utilisateur = null;
-        for (IUtilisateur u : Utilisateurs.liste())
-            if (u.pseudo().equals(arguments[0]))
-                utilisateur = u;
+        IUtilisateur utilisateur = Utilisateurs.utilisateur(arguments[0]);
         if (utilisateur == null) return false;
         connexion.ecrire("Adresse FTP actuelle : " + utilisateur.ftp());
         try 

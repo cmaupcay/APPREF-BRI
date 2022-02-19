@@ -22,6 +22,7 @@ public abstract class Services
             if (s.nom().equals(nom))
             {
                 if (!s.auteur().equals(auteur)) return false;
+                if (s.actif()) return false;
                 services.remove(s);
                 return true;
             }

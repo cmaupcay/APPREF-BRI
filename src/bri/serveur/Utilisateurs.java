@@ -9,12 +9,13 @@ public abstract class Utilisateurs
     
     public static final String DEFAUT = "admin";
 
-    public static boolean existe(final String pseudo)
+    public static IUtilisateur utilisateur(final String pseudo)
     {
         for (IUtilisateur u : utilisateurs)
-            if (u.pseudo().equals(pseudo)) return true;
-        return false;
+            if (u.pseudo().equals(pseudo)) return u;
+        return null;
     }
+    public static boolean existe(final String pseudo) { return utilisateur(pseudo) != null; }
 
     public static boolean ajouter(IUtilisateur utilisateur)
     {

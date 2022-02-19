@@ -19,7 +19,7 @@ public class AjoutUtilisateur extends Action
 
     public AjoutUtilisateur(ISession parent) { super(parent); }
 
-    private static final String TYPES_PACKAGE = "bri.serveur.utilisateurs";
+    private static final String TYPES_PACKAGE = "bri.serveur.utilisateur";
     private static final String[] TYPES = {
         Utilisateur.class.getSimpleName(),
         Programmeur.class.getSimpleName()
