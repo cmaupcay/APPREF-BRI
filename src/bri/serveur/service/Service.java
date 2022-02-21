@@ -2,7 +2,6 @@ package bri.serveur.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLClassLoader;
 
 import bri.Connexion;
 import bri.serveur.Console;
@@ -16,7 +15,8 @@ public class Service implements IService
     @Override
     public final String nom() { return this.nom; }
     @Override
-    public final String toString() { return this.auteur.pseudo() + '/' + nom; }
+    public final String toString() 
+    { return "[" + (this.actif ? '*' : ' ') + "] " + this.auteur.pseudo() + '/' + nom; }
 
     private IUtilisateur auteur;
     @Override
@@ -34,25 +34,25 @@ public class Service implements IService
     @Override
     public final boolean actif() { return this.actif; }
     @Override
-    public final boolean demarrer() 
+    public final boolean activer() 
     { 
         if (!this.actif)
         {
             if (this.classe_service == null)
-                this.mettre_a_jour();
+                if (!this.mettre_a_jour()) return false;
             this.actif = true;
-            Console.afficher(this, "Service démarré.");
+            Console.afficher(this, "Service activé.");
             return true;
         }
         return false;
     }
     @Override
-    public final boolean arreter()
+    public final boolean desactiver()
     {
         if (this.actif)
         {
             this.actif = false;
-            Console.afficher(this, "Service arrêté.");
+            Console.afficher(this, "Service désactivé.");
             return true;
         }
         return false;

@@ -8,8 +8,11 @@ public abstract class Services
 {
     private static final ArrayList<IService> services = new ArrayList<>();
     
+    public static final ArrayList<IService> services() { return services; }
+
     public static final boolean ajouter(final IUtilisateur auteur, final String nom)
     {
+        if (auteur.pseudo() == null || auteur.mdp() == null || nom == null) return false;
         for (IService s : services)
             if (s.nom().equals(nom)) return false;
         services.add(new Service(auteur, nom));

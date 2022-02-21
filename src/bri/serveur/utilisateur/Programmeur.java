@@ -23,18 +23,22 @@ public class Programmeur extends Utilisateur
         final String nom_classe = this.pseudo() + '.' + nom;
         if (cl != null)
         {
-            final Class<?> classe = this.cl.loadClass(nom_classe);
-            final Class<?>[] interfaces = classe.getInterfaces();
-            for (Class<?> i : interfaces)
-                if (i == IServiceBRI.class)
-                {
-                    try 
+            try
+            {
+                final Class<?> classe = this.cl.loadClass(nom_classe);
+                final Class<?>[] interfaces = classe.getInterfaces();
+                for (Class<?> i : interfaces)
+                    if (i == IServiceBRI.class)
                     {
-                        classe.getDeclaredConstructor(Connexion.class);
-                        return classe;
+                        try 
+                        {
+                            classe.getDeclaredConstructor(Connexion.class);
+                            return classe;
+                        }
+                        catch (NoSuchMethodException e) {}
                     }
-                    catch (NoSuchMethodException e) {}
-                }
+            }
+            catch (IllegalArgumentException e) {}
         }
         throw new ClassNotFoundException(nom_classe);
     }

@@ -25,9 +25,18 @@ public class SessionAmateur extends Session
                 s = this.connexion().demander_choix(services_actifs.toArray(), "Quel service voulez-vous utiliser ?");
                 if (s < services_actifs.size())
                 {
-                    this.connexion().ecrire(Connexion.VRAI);
                     service = services_actifs.get(s).nouvelle_instance(this.connexion());
-                    // TODO Démarrage du service choisi
+                    if (service != null) 
+                    {
+                        this.connexion().ecrire(Connexion.VRAI);
+                        service.run();
+                        this.connexion().ecrire("Au revoir !");
+                    }
+                    else
+                    {
+                        this.connexion().ecrire(Connexion.FAUX);
+                        this.connexion().ecrire("ERREUR : Impossible d'ouvrir une nouvelle instance du service.");
+                    }
                 }
                 else this.connexion().ecrire(Connexion.FAUX);
             }

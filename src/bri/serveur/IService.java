@@ -9,8 +9,8 @@ public interface IService
     public IUtilisateur auteur();
 
     public boolean actif();
-    public boolean demarrer();
-    public boolean arreter();
+    public boolean activer();
+    public boolean desactiver();
 
     public boolean mettre_a_jour();
 

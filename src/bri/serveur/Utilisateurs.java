@@ -19,6 +19,7 @@ public abstract class Utilisateurs
 
     public static boolean ajouter(IUtilisateur utilisateur)
     {
+        if (utilisateur.pseudo() == null || utilisateur.mdp() == null) return false;
         if (existe(utilisateur.pseudo())) return false;
         utilisateurs.add(utilisateur);
         Console.afficher("Nouvel utilisateur : " + utilisateur + '.');
