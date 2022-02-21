@@ -12,6 +12,8 @@ public class Connexion
     private BufferedReader entree;
     private PrintWriter sortie;
 
+    public final Socket socket() { return this.connexion; }
+
     public Connexion(Socket connexion) throws IOException
     {
         if (connexion != null && connexion.isConnected())

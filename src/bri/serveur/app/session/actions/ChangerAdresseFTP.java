@@ -3,7 +3,9 @@ package bri.serveur.app.session.actions;
 import java.io.IOException;
 
 import bri.Connexion;
+import bri.serveur.IService;
 import bri.serveur.IUtilisateur;
+import bri.serveur.Services;
 import bri.serveur.Utilisateurs;
 import bri.serveur.app.ISession;
 
@@ -26,6 +28,10 @@ public class ChangerAdresseFTP extends Action
             final String ftp = connexion.demander("Nouvelle adresse FTP : ");
             utilisateur.modifier_ftp(ftp);
             connexion.ecrire(Connexion.VRAI);
+            connexion.ecrire("Mise à jour des classes de services...");
+            for (IService service : Services.services_publies(utilisateur))
+                if (!service.mettre_a_jour())
+                    connexion.ecrire("ERREUR : Impossible de mettre à jour le service " + service.nom() + ".");
             return true;
         }
         catch (IOException e) { return false; }

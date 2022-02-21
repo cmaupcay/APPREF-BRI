@@ -8,6 +8,7 @@ public abstract class Utilisateurs
     public static final  ArrayList<IUtilisateur> liste() { return utilisateurs; }
     
     public static final String DEFAUT = "admin";
+    public static final String DEFAUT_FTP = DEFAUT + ':' + DEFAUT + "@localhost:21";
 
     public static IUtilisateur utilisateur(final String pseudo)
     {

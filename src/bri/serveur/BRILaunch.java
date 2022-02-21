@@ -24,7 +24,17 @@ public class BRILaunch
         ajouter_app(new AppProgrammeur());
 
         // Ajout de l'utilisateur par défaut
-        Utilisateurs.ajouter(new Programmeur(Utilisateurs.DEFAUT, Utilisateurs.DEFAUT, ""));
+        final IUtilisateur utilisateur_par_defaut = new Programmeur(Utilisateurs.DEFAUT, Utilisateurs.DEFAUT, Utilisateurs.DEFAUT_FTP);
+        Utilisateurs.ajouter(utilisateur_par_defaut);
+
+        // Ajout des services par défaut
+        Services.ajouter(utilisateur_par_defaut, "Inversion");
+        Services.ajouter(utilisateur_par_defaut, "AnalyseXML");
+        Services.ajouter(utilisateur_par_defaut, "Messagerie");
+
+        // Activation des services
+        for (IService service : Services.services())
+            service.activer();
 
         // Démarrage des applications dans des threads dédiés
         Console.afficher("Démarrage des applications serveurs...");

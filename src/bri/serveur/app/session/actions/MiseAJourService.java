@@ -29,16 +29,10 @@ public class MiseAJourService extends Action
             connexion.ecrire(Connexion.VRAI);
             final IService service = (IService)services[s];
             if (service.actif())
-            {
                 connexion.ecrire("ERREUR : Veuillez désactiver le service avant de le mettre à jour.");
-                return false;
-            }
-            if (!service.mettre_a_jour())
-            {
+            else if (!service.mettre_a_jour())
                 connexion.ecrire("ERREUR : La mise à jour du service a échoué.");
-                return false;
-            }
-            connexion.ecrire("Service mis à jour !");
+            else connexion.ecrire("Service mis à jour !");
             return true;
         }
         catch (IOException e)

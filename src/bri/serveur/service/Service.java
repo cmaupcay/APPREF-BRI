@@ -2,6 +2,7 @@ package bri.serveur.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.Socket;
 
 import bri.Connexion;
 import bri.serveur.Console;
@@ -77,14 +78,24 @@ public class Service implements IService
     {
         try 
         {
-            Constructor<?> c = this.classe_service.getDeclaredConstructor(Connexion.class);
-            IServiceBRI service = (IServiceBRI)c.newInstance(connexion);
+            Constructor<?> c = null;
+            IServiceBRI service = null;
+            try 
+            { 
+                c = this.classe_service.getDeclaredConstructor(Connexion.class); 
+                service = (IServiceBRI)c.newInstance(connexion);
+            }
+            catch (NoSuchMethodException e)
+            { 
+                try { c = this.classe_service.getDeclaredConstructor(Socket.class); }
+                catch (NoSuchMethodException e2) { throw new InstantiationException() ; }
+                service = (IServiceBRI)c.newInstance(connexion.socket());
+            }
             Console.afficher(this, "Nouvelle instance du service créée.");
             return service;
         }
-        catch (NoSuchMethodException|InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
+        catch (InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
         {
-            connexion.ecrire(Connexion.FAUX);
             Console.afficher(this, "ERREUR : Impossible d'instancier le service.");
             return null;
         }
