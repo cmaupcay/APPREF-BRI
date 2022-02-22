@@ -1,7 +1,5 @@
 package bri.serveur;
 
-import bri.serveur.service.IServiceBRI;
-
 public interface IUtilisateur 
 {
     public String pseudo();

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import bri.Connexion;
+import bri.serveur.Console;
 import bri.serveur.service.IServiceBRI;
 
 public class Programmeur extends Utilisateur
@@ -14,19 +15,31 @@ public class Programmeur extends Utilisateur
     @Override
     public final String ftp() { return this.ftp; }
     @Override
-    public void modifier_ftp(final String ftp) { this.ftp = ftp; }
+    public void modifier_ftp(final String ftp) 
+    { 
+        this.ftp = ftp;
+        this.cl = this.generer_cl();
+    }
 
     private URLClassLoader cl;
     @Override
     public final Class<?> charger_service_distant(final String nom) throws ClassNotFoundException
     {
-        final String nom_classe = this.pseudo() + '.' + nom;
-        if (cl != null)
-        {
-            final Class<?> classe = this.cl.loadClass(nom_classe);
-            if (IServiceBRI.verifier_norme(classe)) return classe;
-        }
-        throw new ClassNotFoundException(nom_classe);
+        // if (nom.substring(nom.length() - 3).equals("jar"))
+        // {
+            // TODO
+            // try { URLClassLoader jar_cl = new URLClassLoader(new URL[]{ new URL("ftp://" + this.ftp + '/' + nom) });
+        // }
+        // else
+        // {
+            final String nom_classe = this.pseudo() + '.' + nom;
+            if (cl != null)
+            {
+                final Class<?> classe = this.cl.loadClass(nom_classe);
+                if (IServiceBRI.verifier_norme(classe)) return classe;
+            }
+            throw new ClassNotFoundException(nom_classe);
+        // }
     }
 
     private final URLClassLoader generer_cl()

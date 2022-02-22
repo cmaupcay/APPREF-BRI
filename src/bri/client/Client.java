@@ -36,7 +36,18 @@ public class Client
         if (elements == null)   // Demande d'une ligne
         {
             message = connexion.tampon();
-            connexion.ecrire(Console.demander(message, true));
+            if (message.equals(Connexion.FICHIER)) // Demande d'un fichier
+            {
+                // TODO
+                // try { Console.demander(connexion.lire(), false); }
+                // catch (IOException e)
+                // {
+                //     Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
+                //     return false;
+                // }
+                // String fichier = 
+            }
+            else connexion.ecrire(Console.demander(message, true));
         }
         else                    // Demande d'un index dans le tableau reçu
         {
@@ -90,7 +101,6 @@ public class Client
                     }
                     catch (NullPointerException e)
                     { Console.afficher("ERREUR : La connexion a été fermée par le serveur."); }
-                    
                 }
             }
             else Console.afficher("ERREUR : Connexion refusée par le mode.");

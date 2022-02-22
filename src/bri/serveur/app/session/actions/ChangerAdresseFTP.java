@@ -26,6 +26,11 @@ public class ChangerAdresseFTP extends Action
         try 
         {
             final String ftp = connexion.demander("Nouvelle adresse FTP : ");
+            if (ftp == null)
+            {
+                connexion.ecrire(Connexion.FAUX);
+                return false;
+            }
             utilisateur.modifier_ftp(ftp);
             connexion.ecrire(Connexion.VRAI);
             connexion.ecrire("Mise à jour des classes de services...");

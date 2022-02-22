@@ -5,7 +5,6 @@ import java.io.IOException;
 import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
-import bri.serveur.service.IServiceBRI;
 
 public class Utilisateur implements IUtilisateur
 {

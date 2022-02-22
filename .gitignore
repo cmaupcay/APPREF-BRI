@@ -1,4 +1,6 @@
 .vscode/
+apache-ftpserver/
+
 # Compiled class file
 *.class
 

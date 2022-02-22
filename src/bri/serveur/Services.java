@@ -13,15 +13,21 @@ public abstract class Services
     public static final boolean ajouter(final IUtilisateur auteur, final String nom)
     {
         if (auteur.pseudo() == null || auteur.mdp() == null || nom == null) return false;
-        for (IService s : services)
+        synchronized (services)
+        {
+            for (IService s : services)
             if (s.nom().equals(nom)) return false;
-        services.add(new Service(auteur, nom));
+            services.add(new Service(auteur, nom));
+        }
+        Console.afficher("Nouveau service : " + auteur.pseudo() + '/' + nom);
         return true;
     }
     
     public static final boolean supprimer(final IUtilisateur auteur, final String nom)
     {
-        for (IService s : services)
+        synchronized (services)
+        {
+            for (IService s : services)
             if (s.nom().equals(nom))
             {
                 if (!s.auteur().equals(auteur)) return false;
@@ -29,6 +35,7 @@ public abstract class Services
                 services.remove(s);
                 return true;
             }
+        }
         return false;
     }
 
@@ -38,7 +45,8 @@ public abstract class Services
         for (IService s : services) if (s.actif()) services_actifs.add(s);
         return services_actifs;
     }
-    public static final ArrayList<IService> services_actifs() { return services_actifs(services); }
+    public static final ArrayList<IService> services_actifs() 
+    { synchronized(services) { return services_actifs(services); } }
 
     public static final ArrayList<IService> services_publies(final ArrayList<IService> services, final IUtilisateur auteur)
     {
@@ -46,5 +54,6 @@ public abstract class Services
         for (IService s : services) if (s.auteur().equals(auteur)) services_p.add(s);
         return services_p;
     }
-    public static final ArrayList<IService> services_publies(final IUtilisateur auteur) { return services_publies(services, auteur); }
+    public static final ArrayList<IService> services_publies(final IUtilisateur auteur)
+    { synchronized (services) { return services_publies(services, auteur); } }
 }

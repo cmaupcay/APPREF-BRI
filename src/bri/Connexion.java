@@ -72,6 +72,7 @@ public class Connexion
 
     // DEMANDE
     public static final String DEMANDE = "@DEM";
+    public static final String FICHIER = "@FICHIER";
     public final String demander(final String message) throws IOException
     {
         this.sortie.println(DEMANDE);
@@ -79,6 +80,8 @@ public class Connexion
         this.sortie.flush();
         return this.lire();
     }
+    public final String demander_fichier(final String message) throws IOException
+    { return demander(FICHIER + "\n" + message); }
     public final int demander_choix(final Object[] tableau, final String message) throws IOException
     {
         this.sortie.println(DEMANDE);

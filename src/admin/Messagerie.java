@@ -28,10 +28,7 @@ public class Messagerie implements IServiceBRI
         private LocalDateTime creation;
         private boolean lu;
         
-        public final IUtilisateur emissaire() { return this.emissaire; }
-        public final IUtilisateur destinataire() { return this.destinataire; }
-        public final String contenu() { return this.contenu; }
-        public final boolean lu() { return this.lu; }
+        private final String creation() { return DateTimeFormatter.ofPattern("dd-MM-yyyy à HH:mm:ss").format(this.creation); }
         public final void lire() { this.lu = true; }
 
         public Message(final IUtilisateur emissaire, final IUtilisateur destinataire, final String contenu)
@@ -45,13 +42,13 @@ public class Messagerie implements IServiceBRI
 
         @Override
         public final String toString()
-        { 
-            return "[" + (this.lu ? ' ' : '*') + "] De " + this.emissaire.pseudo() + 
-            " le " + (DateTimeFormatter.ofPattern("dd-MM-yyyy à HH:mm:ss")).format(this.creation);
-        }
+        { return "[" + (this.lu ? ' ' : '*') + "] De " + this.emissaire.pseudo() + " le " + this.creation(); }
 
         public final String afficher()
-        { return "De : " + this.emissaire.pseudo() + "\nA : " + this.destinataire.pseudo() + "\n" + this.contenu; }
+        { 
+            return "De : " + this.emissaire.pseudo() + "\nA : " + this.destinataire.pseudo() + "\nLe : " + 
+            this.creation() + "\n" + this.contenu; 
+        }
     }
 
     private static ArrayList<Message> MESSAGES = new ArrayList<>();
@@ -116,9 +113,12 @@ public class Messagerie implements IServiceBRI
                     if (mode == 0)          // Lecture
                     {
                         ArrayList<Message> messages = new ArrayList<>();
-                        for (Message m : MESSAGES)
+                        synchronized (MESSAGES)
+                        {
+                            for (Message m : MESSAGES)
                             if (m.destinataire.equals(this.utilisateur))
                                 messages.add(m);
+                        }
                         final int selection = this.connexion.demander_choix(messages.toArray(), "Quel message voulez-vous consulter ?");
                         this.connexion.ecrire(Connexion.VRAI);
                         final Message message = messages.get(selection);
@@ -133,7 +133,8 @@ public class Messagerie implements IServiceBRI
                         this.connexion.ecrire(Connexion.VRAI);
                         final String contenu = this.connexion.demander("Ecrivez votre message :\n");
                         this.connexion.ecrire(Connexion.VRAI);
-                        MESSAGES.add(new Message(this.utilisateur, Utilisateurs.liste().get(destinataire), contenu));
+                        synchronized (MESSAGES)
+                        { MESSAGES.add(new Message(this.utilisateur, Utilisateurs.liste().get(destinataire), contenu)); }
                         this.connexion.ecrire("Message envoyé !");
                     }
                 }

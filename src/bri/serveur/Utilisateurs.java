@@ -8,12 +8,15 @@ public abstract class Utilisateurs
     public static final  ArrayList<IUtilisateur> liste() { return utilisateurs; }
     
     public static final String DEFAUT = "admin";
-    public static final String DEFAUT_FTP = DEFAUT + ':' + DEFAUT + "@localhost:21";
+    public static final String DEFAUT_FTP = "localhost:2121";
 
     public static IUtilisateur utilisateur(final String pseudo)
     {
-        for (IUtilisateur u : utilisateurs)
+        synchronized (utilisateurs)
+        {
+            for (IUtilisateur u : utilisateurs)
             if (u.pseudo().equals(pseudo)) return u;
+        }
         return null;
     }
     public static boolean existe(final String pseudo) { return utilisateur(pseudo) != null; }
@@ -22,21 +25,24 @@ public abstract class Utilisateurs
     {
         if (utilisateur.pseudo() == null || utilisateur.mdp() == null) return false;
         if (existe(utilisateur.pseudo())) return false;
-        utilisateurs.add(utilisateur);
+        synchronized (utilisateurs) { utilisateurs.add(utilisateur); }
         Console.afficher("Nouvel utilisateur : " + utilisateur + '.');
         return true;
     }
     
     public static boolean supprimer(final String pseudo)
     {
-        final int n = utilisateurs.size();
-        for (int u = 0; u < n; u++)
-            if (utilisateurs.get(u).pseudo().equals(pseudo))
-            {
-                utilisateurs.remove(u);
-                Console.afficher("Utilisateur supprimé : " + pseudo + ".");
-                return true;
-            }
+        synchronized (utilisateurs)
+        {
+            final int n = utilisateurs.size();
+            for (int u = 0; u < n; u++)
+                if (utilisateurs.get(u).pseudo().equals(pseudo))
+                {
+                    utilisateurs.remove(u);
+                    Console.afficher("Utilisateur supprimé : " + pseudo + ".");
+                    return true;
+                }
+        }
         return false;
     }
 }

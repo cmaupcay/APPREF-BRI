@@ -33,6 +33,7 @@ public interface IServiceBRI extends Runnable
                     classe.getDeclaredConstructor(Socket.class);
                     // final Method toStringue = classe.getMethod("toStringue");
                     // if (toStringue.getExceptionTypes().length > 0) return false;
+                    return true;
                 }
                 catch (NoSuchMethodException e) { return false; }
             }

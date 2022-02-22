@@ -30,7 +30,6 @@ public class SessionAmateur extends Session
                     {
                         this.connexion().ecrire(Connexion.VRAI);
                         service.run();
-                        this.connexion().ecrire("Au revoir !");
                     }
                     else
                     {
