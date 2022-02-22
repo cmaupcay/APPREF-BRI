@@ -16,7 +16,7 @@ public interface IServiceBRI extends Runnable
      *  * ne pas être abstract                                                  OK
      *  * être publique                                                         OK
      *  * avoir un constructeur public (Socket) sans exception                  OK
-     *  * avoir un attribut Socket private final                                NO  // TODO Vérification de l'attribut Socket
+     *  * avoir un attribut Socket private final                                NO
      *  * avoir une méthode public static String toStringue() sans exception    //
      */
     public static boolean verifier_norme(Class<?> classe)

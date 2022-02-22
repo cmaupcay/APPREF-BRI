@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import bri.Connexion;
-import bri.serveur.Console;
 import bri.serveur.service.IServiceBRI;
 
 public class Programmeur extends Utilisateur
@@ -15,36 +14,31 @@ public class Programmeur extends Utilisateur
     @Override
     public final String ftp() { return this.ftp; }
     @Override
-    public void modifier_ftp(final String ftp) 
-    { 
-        this.ftp = ftp;
-        this.cl = this.generer_cl();
-    }
+    public void modifier_ftp(final String ftp) { this.ftp = ftp; }
 
-    private URLClassLoader cl;
     @Override
     public final Class<?> charger_service_distant(final String nom) throws ClassNotFoundException
     {
-        // if (nom.substring(nom.length() - 3).equals("jar"))
-        // {
-            // TODO
-            // try { URLClassLoader jar_cl = new URLClassLoader(new URL[]{ new URL("ftp://" + this.ftp + '/' + nom) });
-        // }
-        // else
-        // {
-            final String nom_classe = this.pseudo() + '.' + nom;
-            if (cl != null)
+        final String nom_classe = this.pseudo() + '.' + nom;
+        URLClassLoader cl = null;
+        Class<?> classe = null;
+        cl = this.generer_cl(nom + ".jar");
+        if (cl != null)
+        {
+            try { classe = cl.loadClass(nom_classe); }
+            catch (ClassNotFoundException e)
             {
-                final Class<?> classe = this.cl.loadClass(nom_classe);
-                if (IServiceBRI.verifier_norme(classe)) return classe;
+                cl = this.generer_cl("");
+                classe = cl.loadClass(nom_classe);
             }
-            throw new ClassNotFoundException(nom_classe);
-        // }
+            if (IServiceBRI.verifier_norme(classe)) return classe;
+        }
+        throw new ClassNotFoundException(nom_classe);
     }
 
-    private final URLClassLoader generer_cl()
+    private final URLClassLoader generer_cl(final String cible)
     { 
-        try { return new URLClassLoader(new URL[]{ new URL("ftp://" + this.ftp) }); }
+        try { return new URLClassLoader(new URL[]{ new URL("ftp://" + this.ftp + '/' + cible) }); }
         catch (MalformedURLException e) { return null; }
     }
 
@@ -52,18 +46,20 @@ public class Programmeur extends Utilisateur
     { 
         super(pseudo, mdp);
         this.ftp = ftp;
-        this.cl = this.generer_cl();
     }
 
     public Programmeur(Connexion connexion) throws IOException
     {
         super(connexion);
-        this.cl = null;
-        while (this.cl == null)
+        // Définition de l'URL du serveur FTP
+        // NOTE : Le ClassLoader n'est pas membre de Programmeur afin de pouvoir décharger les classes non utilisées.
+        // En effet, pour décharger une classe, la classe et son ClassLoader doivent être collectés par le GC.
+        URLClassLoader cl = null;
+        while (cl == null)
         {
             this.ftp = connexion.demander("URL du serveur FTP : ");
-            this.cl = this.generer_cl();
-            if (this.cl == null) connexion.ecrire(Connexion.FAUX);
+            cl = this.generer_cl("");
+            if (cl == null) connexion.ecrire(Connexion.FAUX);
             else connexion.ecrire(Connexion.VRAI);
         }
     }

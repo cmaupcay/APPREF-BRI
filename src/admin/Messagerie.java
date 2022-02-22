@@ -20,37 +20,6 @@ public class Messagerie implements IServiceBRI
         this.connexion = new Connexion(connexion);
     }
 
-    private class Message
-    {
-        private IUtilisateur emissaire;
-        private IUtilisateur destinataire;
-        private String contenu;
-        private LocalDateTime creation;
-        private boolean lu;
-        
-        private final String creation() { return DateTimeFormatter.ofPattern("dd-MM-yyyy à HH:mm:ss").format(this.creation); }
-        public final void lire() { this.lu = true; }
-
-        public Message(final IUtilisateur emissaire, final IUtilisateur destinataire, final String contenu)
-        {
-            this.emissaire = emissaire;
-            this.destinataire = destinataire;
-            this.contenu = contenu;
-            this.lu = false;
-            this.creation = LocalDateTime.now();
-        }
-
-        @Override
-        public final String toString()
-        { return "[" + (this.lu ? ' ' : '*') + "] De " + this.emissaire.pseudo() + " le " + this.creation(); }
-
-        public final String afficher()
-        { 
-            return "De : " + this.emissaire.pseudo() + "\nA : " + this.destinataire.pseudo() + "\nLe : " + 
-            this.creation() + "\n" + this.contenu; 
-        }
-    }
-
     private static ArrayList<Message> MESSAGES = new ArrayList<>();
     private static final String[] MODES = {
         "Lire vos messages",
@@ -116,7 +85,7 @@ public class Messagerie implements IServiceBRI
                         synchronized (MESSAGES)
                         {
                             for (Message m : MESSAGES)
-                            if (m.destinataire.equals(this.utilisateur))
+                            if (m.destinataire().equals(this.utilisateur))
                                 messages.add(m);
                         }
                         final int selection = this.connexion.demander_choix(messages.toArray(), "Quel message voulez-vous consulter ?");
