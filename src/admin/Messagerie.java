@@ -131,7 +131,7 @@ public class Messagerie implements IServiceBRI
                     {
                         final int destinataire = this.connexion.demander_choix(Utilisateurs.liste().toArray(), "A qui voulez vous envoyer un message ?");
                         this.connexion.ecrire(Connexion.VRAI);
-                        final String contenu = this.connexion.demander("Ecrivez votre message :\n");
+                        final String contenu = this.connexion.demander("Ecrivez votre message : ");
                         this.connexion.ecrire(Connexion.VRAI);
                         synchronized (MESSAGES)
                         { MESSAGES.add(new Message(this.utilisateur, Utilisateurs.liste().get(destinataire), contenu)); }
