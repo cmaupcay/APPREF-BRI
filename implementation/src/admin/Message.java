@@ -37,7 +37,7 @@ public class Message
 
     public final String afficher()
     { 
-        return "De : " + this.emissaire.pseudo() + "\nA : " + this.destinataire.pseudo() + "\nLe : " + 
+        return "De : " + this.emissaire.pseudo() + "\nA  : " + this.destinataire.pseudo() + "\nLe : " + 
         this.affichage_creation() + "\n\n" + this.contenu + "\n"; 
     }
 }

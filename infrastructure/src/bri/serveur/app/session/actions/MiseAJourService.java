@@ -28,11 +28,19 @@ public class MiseAJourService extends Action
             final int s = connexion.demander_choix(services, "Quel service souhaitez-vous mettre à jour ?");
             connexion.ecrire(Connexion.VRAI);
             final IService service = (IService)services[s];
+            boolean activer = false;
             if (service.actif())
-                connexion.ecrire("ERREUR : Veuillez désactiver le service avant de le mettre à jour.");
-            else if (!service.mettre_a_jour())
-                connexion.ecrire("ERREUR : La mise à jour du service a échoué.");
-            else connexion.ecrire("Service mis à jour !");
+            {
+                if (!this.controle_activite_service(connexion, arguments[0], s)) return true;
+                activer = true;
+            }
+            if (!service.actif())
+            {
+                if (!service.mettre_a_jour())
+                    connexion.ecrire("ERREUR : La mise à jour du service a échoué.");
+                else connexion.ecrire("Service mis à jour !");
+                if (activer) this.controle_activite_service(connexion, arguments[0], s);
+            }
             return true;
         }
         catch (IOException e)

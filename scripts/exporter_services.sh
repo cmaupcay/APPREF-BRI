@@ -2,23 +2,34 @@
 
 INITIAL=$PWD
 cd $(dirname $0)
-SOURCE="../bin/admin"
-DESTINATION="../apache-ftpserver/res/home/admin"
+SOURCE="../implementation/bin"
+DESTINATION="../apache-ftpserver/res/home"
 
 if [ -d $DESTINATION ]
 then
     rm -rf $DESTINATION
 fi
 mkdir $DESTINATION
+mkdir $DESTINATION/admin
 
-echo "Copie du service Inversion..."
-cp $SOURCE/Inversion.class $DESTINATION
+echo "Copie du service admin.Inversion..."
+cp $SOURCE/admin/Inversion.class $DESTINATION/admin
+if [ ! $? -eq 0 ]
+then
+    echo "La copie du fichier a échoué."
+    exit
+fi
 
-echo "Copie du service AnalyseXML..."
-cp $SOURCE/AnalyseXML.class $DESTINATION
+echo "Copie du service admin.AnalyseXML..."
+cp $SOURCE/admin/AnalyseXML.class $DESTINATION/admin
+if [ ! $? -eq 0 ]
+then
+    echo "La copie du fichier a échoué."
+    exit
+fi
 
-echo "Création du fichier JAR pour la Messagerie..."
-jar cf $DESTINATION/Messagerie.jar $SOURCE/Messagerie.class $SOURCE/Message.class
+echo "Création du fichier JAR pour le service admin/Messagerie..."
+jar cf $DESTINATION/admin/Messagerie.jar $SOURCE/admin/Messagerie.class $SOURCE/admin/Message.class
 if [ ! $? -eq 0 ]
 then
     echo "La création du fichier JAR a échoué."

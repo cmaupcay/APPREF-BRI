@@ -2,8 +2,6 @@ package admin;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import bri.Connexion;
@@ -107,6 +105,7 @@ public class Messagerie implements IServiceBRI
                         this.connexion.ecrire("Message envoyé !");
                     }
                 }
+                this.connexion.ecrire(Connexion.VRAI);
                 this.connexion.ecrire("Au revoir !");
             }
             this.connexion.fermer();

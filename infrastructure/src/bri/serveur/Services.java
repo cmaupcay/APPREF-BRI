@@ -48,6 +48,15 @@ public abstract class Services
     public static final ArrayList<IService> services_actifs() 
     { synchronized(services) { return services_actifs(services); } }
 
+    public static final ArrayList<IService> services_inactifs(final ArrayList<IService> services)
+    {
+        ArrayList<IService> services_inactifs = new ArrayList<>();
+        for (IService s : services) if (!s.actif()) services_inactifs.add(s);
+        return services_inactifs;
+    }
+    public static final ArrayList<IService> services_inactifs() 
+    { synchronized(services) { return services_inactifs(services); } }
+
     public static final ArrayList<IService> services_publies(final ArrayList<IService> services, final IUtilisateur auteur)
     {
         ArrayList<IService> services_p = new ArrayList<>();

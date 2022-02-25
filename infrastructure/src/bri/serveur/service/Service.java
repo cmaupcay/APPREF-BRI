@@ -11,7 +11,9 @@ import bri.serveur.IUtilisateur;
 
 public class Service implements IService
 {
+    private BRIClassLoader cl;
     private Class<?> classe_service;
+    
     private String nom;
     @Override
     public final String nom() { return this.nom; }
@@ -29,6 +31,7 @@ public class Service implements IService
         this.auteur = auteur;
         this.actif = false;
         this.classe_service = null;
+        this.cl = null;
     }
 
     private boolean actif;
@@ -59,18 +62,38 @@ public class Service implements IService
         return false;
     }
 
+    private final void charger_classe_distante() throws ClassNotFoundException, ClassFormatError
+    {
+        final String nom_classe = this.auteur.pseudo() + '.' + this.nom;
+        Class<?> classe = null;
+        this.cl = new BRIClassLoader(this.auteur, this.nom + ".jar");
+        try { classe = this.cl.loadClass(nom_classe); }
+        catch (ClassNotFoundException e) 
+        {
+            this.cl = new BRIClassLoader(this.auteur, "");
+            try { classe = this.cl.loadClass(nom_classe); }
+            catch (ClassNotFoundException e2)
+            { throw new ClassNotFoundException("la classe est introuvable sur le serveur.", e2); }
+        }
+        if (IServiceBRI.verifier_norme(classe)) this.classe_service = classe;
+        else throw new ClassFormatError("la classe ne respecte pas la norme BRI.");
+    }
+
     @Override
     public final boolean mettre_a_jour()
     {
         Console.afficher(this, "Mise à jour depuis le serveur FTP...");
-        try { this.classe_service = this.auteur.charger_service_distant(this.nom()); }
-        catch (ClassNotFoundException e)
+        try 
+        { 
+            this.charger_classe_distante(); 
+            Console.afficher(this, "Classe du service mise à jour.");
+            return true;
+        }
+        catch (ClassNotFoundException|ClassFormatError e)
         {
-            Console.afficher(this, "ERREUR : Impossible de charger la classe distante.");
+            Console.afficher(this, "ERREUR : Impossible de charger la classe distante : " + e.getMessage());
             return false;
         }
-        Console.afficher(this, "Classe du service mise à jour.");
-        return true;
     }
 
     @Override

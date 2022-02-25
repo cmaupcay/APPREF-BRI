@@ -29,10 +29,7 @@ public class SuppressionService extends Action
             connexion.ecrire(Connexion.VRAI);
             final IService service = (IService)services[s];
             if (service.actif())
-            {
-                connexion.ecrire("ERREUR : Veuillez arrêter le service avant de le supprimer.");
-                return false;
-            }
+                if (!this.controle_activite_service(connexion, arguments[0], s)) return true;
             if (!Services.supprimer(auteur, service.nom()))
             {
                 connexion.ecrire("ERREUR : La suppression du service a échoué.");

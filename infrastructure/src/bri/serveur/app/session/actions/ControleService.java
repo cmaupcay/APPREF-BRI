@@ -25,19 +25,26 @@ public class ControleService extends Action
             IUtilisateur auteur = Utilisateurs.utilisateur(arguments[0]);
             if (auteur == null) return false;
             final Object[] services = Services.services_publies(auteur).toArray();
-            final int s = connexion.demander_choix(services, "De quel service souhaitez-vous modifier l'état ?");
-            connexion.ecrire(Connexion.VRAI);
+            int s = -1;
+            if (arguments.length > 1) s = Integer.parseInt(arguments[1]);
+            else
+            {
+                s = connexion.demander_choix(services, "De quel service souhaitez-vous modifier l'état ?");
+                connexion.ecrire(Connexion.VRAI);
+            } 
             final IService service = (IService)services[s];
-            String action = "", erreur = "";
+            String action = "", succes = "", erreur = "";
             if (service.actif())
             {
                 connexion.ecrire("ATTENTION : La désactivation d'un service actif ne supprime pas les sessions actives utilisant ce service.");
                 action = "Désactiver le service ";
+                succes = "Service désactivé. ";
                 erreur = "Impossible de désactiver le service.";
             }
             else 
             {
                 action = "Activer le service ";
+                succes = "Service activé.";
                 erreur = "Impossible d'activer le service.";
             }
             final String choix = connexion.demander(action + service.nom() + " (o/n) ? ");
@@ -47,7 +54,8 @@ public class ControleService extends Action
                 boolean resultat = true;
                 if (service.actif()) resultat = service.desactiver();
                 else resultat = service.activer();
-                if (!resultat) connexion.ecrire("ERREUR : " + erreur);
+                if (resultat) connexion.ecrire(succes);
+                else connexion.ecrire("ERREUR : " + erreur);
             }
             return true;
 

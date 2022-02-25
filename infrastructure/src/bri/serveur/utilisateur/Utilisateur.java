@@ -21,10 +21,6 @@ public class Utilisateur implements IUtilisateur
     @Override
     public void modifier_ftp(final String ftp) {}
 
-    @Override
-    public Class<?> charger_service_distant(final String nom) throws ClassNotFoundException 
-    { return null; }
-
     public Utilisateur(final String pseudo, final String mdp)
     {
         this.pseudo = pseudo;

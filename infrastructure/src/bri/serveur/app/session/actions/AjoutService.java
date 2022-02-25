@@ -30,14 +30,7 @@ public class AjoutService extends Action
             }
             connexion.ecrire(Connexion.VRAI);
             connexion.ecrire("Service ajouté !");
-            final String choix = connexion.demander("Activer le service (o/n) ? ");
-            connexion.ecrire(Connexion.VRAI);
-            if (choix.toLowerCase().equals("o"))
-            {
-                if (Services.services().get(Services.services().size() - 1).activer())
-                    connexion.ecrire("Service activé !");
-                else connexion.ecrire("ERREUR : Impossible d'activer le service. Veuillez vérifiez le nom de la classe.");
-            }
+            this.controle_activite_service(connexion, arguments[0], Services.services().size() - 1);
             return true;
 
         }

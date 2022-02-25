@@ -14,6 +14,7 @@ public class Quitter extends Action
     @Override
     public final boolean executer(Connexion connexion, String[] arguments)
     { 
+        connexion.ecrire("Au revoir !");
         Console.afficher(this.parent().parent(), "Session quittée par le client.");
         return false;
     }
