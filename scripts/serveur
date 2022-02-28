@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Démarrage de l'environnement serveur BRI.
+
+INITIAL=$PWD
+cd $(dirname $0)
+
+java -cp ../infrastructure/bin bri.serveur.BRILaunch
+
+echo "Fini."
+cd $INITIAL

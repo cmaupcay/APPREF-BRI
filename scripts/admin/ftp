@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Démarrage du serveur FTP du programmeur admin.
+
+INITIAL=$PWD
+cd $(dirname $0)
+FTP_BIN=$(realpath "../../apache-ftpserver/bin/ftpd.sh")
+FTP_CONFIG="res/conf/ftpd-typical.xml"
+
+$FTP_BIN $FTP_CONFIG
+if [ ! $? -eq 0 ]
+then
+    echo "Le démarrage du serveur FTP a échoué."
+    exit
+fi
+
+echo "Fini."
+cd $INITIAL

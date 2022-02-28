@@ -1,0 +1,12 @@
+
+#!/bin/sh
+
+# Démarrage d'un client BRI.
+
+INITIAL=$PWD
+cd $(dirname $0)
+
+java -cp ../infrastructure/bin bri.client.Client
+
+echo "Fini."
+cd $INITIAL

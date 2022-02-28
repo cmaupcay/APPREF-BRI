@@ -1,19 +1,20 @@
 #!/bin/sh
 
+# Exportation des implémentations du programmeur admin.
+
 INITIAL=$PWD
 cd $(dirname $0)
-SOURCE=$(realpath "../implementation/bin")
-DESTINATION=$(realpath "../apache-ftpserver/res/home")
+SOURCE=$(realpath "../../implementation/bin")
+DESTINATION=$(realpath "../../apache-ftpserver/res/home/admin")
 
 if [ -d $DESTINATION ]
 then
     rm -rf $DESTINATION
 fi
 mkdir $DESTINATION
-mkdir $DESTINATION/admin
 
 echo "Copie du service admin.Inversion..."
-cp $SOURCE/admin/Inversion.class $DESTINATION/admin
+cp $SOURCE/admin/Inversion.class $DESTINATION
 if [ ! $? -eq 0 ]
 then
     echo "La copie du fichier a échoué."
@@ -21,7 +22,7 @@ then
 fi
 
 echo "Copie du service admin.AnalyseXML..."
-cp $SOURCE/admin/AnalyseXML.class $DESTINATION/admin
+cp $SOURCE/admin/AnalyseXML.class $DESTINATION
 if [ ! $? -eq 0 ]
 then
     echo "La copie du fichier a échoué."
@@ -36,7 +37,7 @@ then
     echo "La création du fichier JAR a échoué."
     exit
 fi
-mv Messagerie.jar $DESTINATION/admin/Messagerie.jar
+mv Messagerie.jar $DESTINATION/Messagerie.jar
 if [ ! $? -eq 0 ]
 then
     echo "Le déplacement du fichier JAR sur le serveur a échoué."

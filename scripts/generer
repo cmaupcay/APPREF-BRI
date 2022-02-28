@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Génération de la bibliothèque JAR nécessaire aux programmeurs pour développer des services BRI.
+
 INITIAL=$PWD
 cd $(dirname $0)
 SOURCE=$(realpath "../infrastructure/bin")
@@ -13,7 +15,9 @@ fi
 
 echo "Création de la bibliothèque BRI..."
 cd $SOURCE
-jar --create --file $JAR bri/
+SERVEUR=bri/serveur
+FICHIERS="bri/Connexion.class $SERVEUR/service/IServiceBRI.class $SERVEUR/utilisateur $SERVEUR/Console.class $SERVEUR/IUtilisateur.class $SERVEUR/Utilisateurs.class"
+jar --create --file $JAR $FICHIERS
 if [ ! $? -eq 0 ]
 then
     echo "La création du fichier JAR a échoué."

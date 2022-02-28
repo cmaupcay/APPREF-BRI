@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Ouverture des fenêtres de développement.
+
+INITIAL=$PWD
+cd $(dirname $0)
+
+code ../implementation
+code ../infrastructure
+code ../scripts
+
+echo "Fini."
+cd $INITIAL
