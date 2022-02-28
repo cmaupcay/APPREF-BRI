@@ -9,6 +9,7 @@ import bri.serveur.Console;
 import bri.serveur.IApp;
 import bri.serveur.app.ISession;
 
+// TOCOMMENT Session
 public abstract class Session implements ISession
 {
     private Thread thread;

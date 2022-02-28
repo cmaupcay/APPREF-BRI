@@ -3,6 +3,9 @@ package bri.serveur.service;
 import java.lang.reflect.Modifier;
 import java.net.Socket;
 
+/**
+ * Interface des services BRI développés par les programmeurs.
+ */
 public interface IServiceBRI extends Runnable
 {
     // public String toStringue();

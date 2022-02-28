@@ -5,6 +5,7 @@ import java.io.IOException;
 import bri.Connexion;
 import bri.serveur.app.session.SessionProgrammeur;
 
+// TOCOMMENT AppProgrammeur
 public class AppProgrammeur extends App
 {
     public static final String NOM = "Programmeur";

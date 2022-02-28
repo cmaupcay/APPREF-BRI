@@ -6,11 +6,20 @@ import bri.serveur.app.AppAmateur;
 import bri.serveur.app.AppProgrammeur;
 import bri.serveur.utilisateur.Programmeur;
 
+/**
+ * Classe principale du serveur BRI.
+ */
 public class BRILaunch 
 {
+    /** Version de la plateforme. */
     public static final String VERSION = "alpha";
+    /** Liste des applications serveurs. */
     private static ArrayList<IApp> apps = new ArrayList<>();
 
+    /**
+     * Ajout d'une application serveur.
+     * @param app Application serveur à ajouter.
+     */
     private static void ajouter_app(IApp app)
     {
         apps.add(app);

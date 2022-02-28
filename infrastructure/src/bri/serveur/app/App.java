@@ -9,6 +9,7 @@ import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IApp;
 
+// TOCOMMENT App
 public abstract class App implements IApp
 {
     protected Thread thread;

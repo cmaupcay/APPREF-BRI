@@ -1,7 +1,7 @@
 package bri.serveur.app.session;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import bri.Connexion;
 import bri.serveur.Console;
@@ -10,6 +10,7 @@ import bri.serveur.Services;
 import bri.serveur.app.session.actions.Quitter;
 import bri.serveur.service.IServiceBRI;
 
+// TOCOMMENT SessionAma
 public class SessionAmateur extends Session
 {
     @Override
@@ -17,7 +18,7 @@ public class SessionAmateur extends Session
     {
         try 
         {
-            ArrayList<IService> services_actifs = null;
+            List<IService> services_actifs = null;
             IServiceBRI service = null;
             int s;
             boolean continuer = true;

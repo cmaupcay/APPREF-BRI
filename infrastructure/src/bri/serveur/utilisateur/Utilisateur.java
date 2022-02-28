@@ -6,12 +6,17 @@ import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
 
+/**
+ * Classe des utilisateurs BRI de base.
+ */
 public class Utilisateur implements IUtilisateur
 {
+    /** Pseudo de l'utilisateur. */
     private String pseudo;
     @Override
     public final String pseudo() { return this.pseudo; }
 
+    /** Mot de passe de l'utilisateur. */
     private String mdp;
     @Override
     public final String mdp() { return this.mdp; }
@@ -21,6 +26,11 @@ public class Utilisateur implements IUtilisateur
     @Override
     public void modifier_ftp(final String ftp) {}
 
+    /**
+     * Création d'un nouvel utilisateur.
+     * @param pseudo Pseudo de l'utilisateur.
+     * @param mdp Mot de passe de l'utilisateur.
+     */
     public Utilisateur(final String pseudo, final String mdp)
     {
         this.pseudo = pseudo;
@@ -30,17 +40,26 @@ public class Utilisateur implements IUtilisateur
     @Override
     public final String toString() { return this.pseudo() + " (" + this.getClass().getSimpleName() + ')'; }
 
-    private final boolean rang_different(Connexion connexion)
+    /**
+     * Vérifie que, si un utilisateur ayant le même pseudo est enregistré, il est un rang différent.
+     * @return Résultat de la vérification.
+     */
+    private final boolean rang_different()
     {
         for (IUtilisateur u : Utilisateurs.liste())
             if (u.pseudo().equals(this.pseudo))
                 return !u.getClass().equals(this.getClass());
         return true;
     }
-
+    /**
+     * Proposition de promotion du rang de l'utilisateur déjà enregistré.
+     * @param connexion Connexion cliente.
+     * @return Indique si la promotion à eu lieu.
+     * @throws IOException Impossible de lire les informations de connexion.
+     */
     private final boolean proposer_promotion(Connexion connexion) throws IOException
     {
-        if (this.rang_different(connexion))
+        if (this.rang_different())
         {
             connexion.ecrire("ATTENTION : Une promotion supprime le compte précédent.");
             final String choix = connexion.demander("Promouvoir " + this.pseudo + " au rang " + this.getClass().getSimpleName() + " (o/n) ? ");
@@ -56,6 +75,11 @@ public class Utilisateur implements IUtilisateur
         else return false;
     }
 
+    /**
+     * Création d'un nouvel utilisateur de manière interactive depuis une connexion.
+     * @param connexion Connexion cliente.
+     * @throws IOException Impossible de lire les informations de connexion.
+     */
     public Utilisateur(Connexion connexion) throws IOException
     {
         this.pseudo = connexion.demander("Pseudo : ");

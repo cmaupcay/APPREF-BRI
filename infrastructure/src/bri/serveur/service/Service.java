@@ -9,10 +9,15 @@ import bri.serveur.Console;
 import bri.serveur.IService;
 import bri.serveur.IUtilisateur;
 
+/**
+ * Conteneur de service BRI.
+ */
 public class Service implements IService
 {
+    /** Chargeur de classe distante. */
     private ServiceClassLoader loader;
     
+    /** Nom du service. */
     private String nom;
     @Override
     public final String nom() { return this.nom; }
@@ -20,10 +25,16 @@ public class Service implements IService
     public final String toString() 
     { return "[" + (this.actif ? '*' : ' ') + "] " + this.auteur.pseudo() + '/' + nom; }
 
+    /** Auteur du service. */
     private IUtilisateur auteur;
     @Override
     public final IUtilisateur auteur() { return this.auteur; }
 
+    /**
+     * Construction d'un nouveau conteneur de service.
+     * @param auteur Auteur du service.
+     * @param nom Nom du service.
+     */
     public Service(final IUtilisateur auteur, final String nom)
     {
         this.nom = nom;
@@ -32,6 +43,7 @@ public class Service implements IService
         this.loader = null;
     }
 
+    /** Drapeau d'activité du service. */
     private boolean actif;
     @Override
     public final boolean actif() { return this.actif; }
@@ -60,9 +72,15 @@ public class Service implements IService
         return false;
     }
 
+    @Override
     public final String classe() { return this.auteur.pseudo() + '.' + this.nom; }
 
-    private final void charger_classe_distante() throws ClassNotFoundException, ClassFormatError
+    /**
+     * Charge la classe du service BRI depuis le serveur FTP de l'auteur.
+     * @throws ClassNotFoundException
+     * @throws ClassFormatError
+     */
+    private final void charger_service_distant() throws ClassNotFoundException, ClassFormatError
     {
         final String nom_classe = this.classe();
         ServiceClassLoader loader = null;
@@ -91,7 +109,7 @@ public class Service implements IService
         Console.afficher(this, "Mise à jour depuis le serveur FTP...");
         try 
         { 
-            this.charger_classe_distante(); 
+            this.charger_service_distant(); 
             Console.afficher(this, "Classe du service mise à jour.");
             return true;
         }

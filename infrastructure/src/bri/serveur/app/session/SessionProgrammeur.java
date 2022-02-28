@@ -1,10 +1,9 @@
 package bri.serveur.app.session;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import bri.Connexion;
-import bri.serveur.BRILaunch;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
@@ -18,6 +17,7 @@ import bri.serveur.app.session.actions.SuppressionService;
 import bri.serveur.app.session.actions.SuppressionUtilisateur;
 import bri.serveur.utilisateur.Programmeur;
 
+// TOCOMMENT SessionProg
 public class SessionProgrammeur extends Session
 {
     private static final int TENTATIVES_MAX = 3;
@@ -25,7 +25,7 @@ public class SessionProgrammeur extends Session
 
     private final boolean verifier_pseudo(final String pseudo)
     {
-        ArrayList<IUtilisateur> utilisateurs = Utilisateurs.liste();
+        List<IUtilisateur> utilisateurs = Utilisateurs.liste();
         for (IUtilisateur u : utilisateurs)
         {
             if (u.getClass() == Programmeur.class && u.pseudo().equals(pseudo))
