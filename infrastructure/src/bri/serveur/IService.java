@@ -7,6 +7,7 @@ public interface IService
 {
     public String nom();
     public IUtilisateur auteur();
+    public String classe();
 
     public boolean actif();
     public boolean activer();

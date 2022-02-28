@@ -11,10 +11,7 @@ import bri.serveur.service.IServiceBRI;
 
 public class Messagerie implements IServiceBRI
 {
-    // static
-    // {
-    //     Messagerie.class.getClassLoader().loadClass("admin.Message");
-    // }
+    public static final String VERSION = "1.0.0";
 
     private Connexion connexion;
 
@@ -73,6 +70,7 @@ public class Messagerie implements IServiceBRI
     @Override
     public final void run()
     {
+        this.connexion.ecrire("Messagerie BRI - version " + VERSION);
         try
         {
             if (this.connexion())
@@ -91,6 +89,7 @@ public class Messagerie implements IServiceBRI
                             if (m.destinataire().equals(this.utilisateur))
                                 messages.add(m);
                         }
+                        Object[] menu = new Object[messages.size() + 1];
                         final int selection = this.connexion.demander_choix(messages.toArray(), "Quel message voulez-vous consulter ?");
                         this.connexion.ecrire(Connexion.VRAI);
                         final Message message = messages.get(selection);

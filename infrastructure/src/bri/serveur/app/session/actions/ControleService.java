@@ -47,15 +47,23 @@ public class ControleService extends Action
                 succes = "Service activé.";
                 erreur = "Impossible d'activer le service.";
             }
-            final String choix = connexion.demander(action + service.nom() + " (o/n) ? ");
-            connexion.ecrire(Connexion.VRAI);
-            if (choix.toLowerCase().equals("o"))
+            boolean continuer = true;
+            String choix = "";
+            while (continuer)
             {
-                boolean resultat = true;
-                if (service.actif()) resultat = service.desactiver();
-                else resultat = service.activer();
-                if (resultat) connexion.ecrire(succes);
-                else connexion.ecrire("ERREUR : " + erreur);
+                choix = connexion.demander(action + service.nom() + " (o/n) ? ").toLowerCase();
+                if (choix.equals("o"))
+                {
+                    connexion.ecrire(Connexion.VRAI);
+                    boolean resultat = true;
+                    if (service.actif()) resultat = service.desactiver();
+                    else resultat = service.activer();
+                    if (resultat) connexion.ecrire(succes);
+                    else connexion.ecrire("ERREUR : " + erreur);
+                    continuer = false;
+                }
+                else if (choix.equals("n")) connexion.ecrire(Connexion.VRAI);
+                else connexion.ecrire(Connexion.FAUX);
             }
             return true;
 

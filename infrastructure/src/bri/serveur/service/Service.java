@@ -11,7 +11,7 @@ import bri.serveur.IUtilisateur;
 
 public class Service implements IService
 {
-    private Class<? extends IServiceBRI> classe_service;
+    private ServiceClassLoader loader;
     
     private String nom;
     @Override
@@ -29,7 +29,7 @@ public class Service implements IService
         this.nom = nom;
         this.auteur = auteur;
         this.actif = false;
-        this.classe_service = null;
+        this.loader = null;
     }
 
     private boolean actif;
@@ -40,7 +40,7 @@ public class Service implements IService
     { 
         if (!this.actif)
         {
-            if (this.classe_service == null)
+            if (this.loader == null)
                 if (!this.mettre_a_jour()) return false;
             this.actif = true;
             Console.afficher(this, "Service activé.");
@@ -60,24 +60,27 @@ public class Service implements IService
         return false;
     }
 
+    public final String classe() { return this.auteur.pseudo() + '.' + this.nom; }
+
     private final void charger_classe_distante() throws ClassNotFoundException, ClassFormatError
     {
-        final String nom_classe = this.auteur.pseudo() + '.' + this.nom;
-        ClassLoader cl = null;
+        final String nom_classe = this.classe();
+        ServiceClassLoader loader = null;
         Class<?> classe = null;
-        cl = new ServiceClassLoader(this.auteur, this.nom);
-        try { classe = cl.loadClass(nom_classe); }
+        loader = new ServiceClassLoader(this.auteur, this.nom);
+        try { classe = loader.loadClass(nom_classe); }
         catch (ClassNotFoundException e) 
         {
-            cl = new ServiceClassLoader(this.auteur);
-            try { classe = cl.loadClass(nom_classe); }
+            loader = new ServiceClassLoader(this.auteur);
+            try { classe = loader.loadClass(nom_classe); }
             catch (ClassNotFoundException e2)
             { throw new ClassNotFoundException("la classe est introuvable sur le serveur.", e2); }
         }
         if (IServiceBRI.verifier_norme(classe))
         {
-            try { this.classe_service = classe.asSubclass(IServiceBRI.class); }
+            try { classe.asSubclass(IServiceBRI.class); }
             catch (ClassCastException e) { throw new ClassFormatError("impossible d'importer la classe en tant que service BRI."); }
+            this.loader = loader;
         }
         else throw new ClassFormatError("la classe ne respecte pas la norme BRI.");
     }
@@ -104,23 +107,24 @@ public class Service implements IService
     {
         try 
         {
+            Class<? extends IServiceBRI> classe = this.loader.loadClass(this.classe()).asSubclass(IServiceBRI.class);
             Constructor<?> c = null;
             IServiceBRI service = null;
             try 
             { 
-                c = this.classe_service.getDeclaredConstructor(Connexion.class); 
+                c = classe.getDeclaredConstructor(Connexion.class); 
                 service = (IServiceBRI)c.newInstance(connexion);
             }
             catch (NoSuchMethodException e)
             { 
-                try { c = this.classe_service.getDeclaredConstructor(Socket.class); }
+                try { c = classe.getDeclaredConstructor(Socket.class); }
                 catch (NoSuchMethodException e2) { throw new InstantiationException() ; }
                 service = (IServiceBRI)c.newInstance(connexion.socket());
             }
             Console.afficher(this, "Nouvelle instance du service créée.");
             return service;
         }
-        catch (InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
+        catch (ClassNotFoundException|InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
         {
             Console.afficher(this, "ERREUR : Impossible d'instancier le service.");
             return null;
