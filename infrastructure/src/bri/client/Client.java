@@ -9,20 +9,37 @@ import bri.Connexion;
 import bri.client.mode.Amateur;
 import bri.client.mode.Programmeur;
 
+/**
+ * Classe principale du client BRI.
+ */
 public class Client 
 {
+    /** Adresse du serveur BRI. */
     private static String SERVEUR = "localhost";
+    /** Modes de connexion disponibles. */
     private static ArrayList<IMode> modes = new ArrayList<>();
 
+    /**
+     * Ajout des modes de connexion.
+     */
     private static final void charger_modes()
     {
         modes.add(new Amateur());
         modes.add(new Programmeur());
     }
 
+    /**
+     * Séléction du mode de connexion au serveur BRI.
+     * @return Mode de connexion séléctionné.
+     */
     private static final IMode choisir_mode()
     { return modes.get(Console.choisir(modes.toArray(), "Choisissez le mode à utiliser : ")); }
 
+    /**
+     * Procédure de réponse aux demandes du serveur.
+     * @param connexion Connexion au serveur BRI.
+     * @return Indique si le client doit continuer à répondre aux demandes.
+     */
     private static final boolean repondre_aux_demandes(Connexion connexion)
     {
         String[] elements = null;

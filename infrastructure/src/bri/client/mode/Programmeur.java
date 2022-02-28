@@ -6,12 +6,16 @@ import bri.Connexion;
 import bri.client.Console;
 import bri.serveur.app.AppProgrammeur;
 
+/**
+ * Mode de connexion à l'application Programmeur du serveur BRI.
+ */
 public class Programmeur extends Mode
 {
+    /**
+     * Création du mode Programmeur.
+     */
     public Programmeur()
-    {
-        super(AppProgrammeur.NOM, AppProgrammeur.PORT);
-    }
+    { super(AppProgrammeur.NOM, AppProgrammeur.PORT); }
 
     @Override
     public final boolean accepter_connexion(Connexion connexion) 

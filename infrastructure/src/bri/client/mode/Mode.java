@@ -6,17 +6,33 @@ import bri.Connexion;
 import bri.client.Console;
 import bri.client.IMode;
 
+/**
+ * Classe de base des modes de connexion au serveur BRI.
+ */
 public abstract class Mode implements IMode
 {
+    /** Nom du mode. */
     protected final String nom;
+    /** Port associé au mode sur le serveur. */
     protected final int port;
 
+    /**
+     * Création du mode.
+     * @param nom Nom du mode.
+     * @param port Port associé.
+     */
     protected Mode(final String nom, final int port)
     {
         this.nom = nom;
         this.port = port;
     }
 
+    /**
+     * Procédure de réponse à une demande du serveur.
+     * @param connexion Connexion au serveur.
+     * @return Réponse envoyée au serveur.
+     * @throws IOException Impossible de procéder à la réponse.
+     */
     public static final String repondre_a_demande(Connexion connexion) throws IOException
     {
         String tmp = connexion.lire();
