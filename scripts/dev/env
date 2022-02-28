@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Ouverture de l'environnement de développement.
+
+INITIAL=$PWD
+cd $(dirname $0)
+EDITEUR=code
+
+echo "Ouverture des fenêtres d'édition..."
+$EDITEUR ../../implementation
+$EDITEUR ../../infrastructure
+$EDITEUR ../../scripts
+
+echo "Génération de la bibliothèque BRI pour l'implémentation..."
+./generer
+
+echo "Mise à jour du contenu du serveur FTP..."
+../admin/publier
+
+echo "Démarrage du serveur FTP..."
+sudo ../admin/ftp
+
+echo "Fini."
+cd $INITIAL

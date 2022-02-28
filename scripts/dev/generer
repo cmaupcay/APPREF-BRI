@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Génération de la bibliothèque JAR nécessaire aux programmeurs pour développer des services BRI.
+
+INITIAL=$PWD
+cd $(dirname $0)
+SOURCE=$(realpath "../../infrastructure/bin")
+DESTINATION=$(realpath "../../implementation/lib")
+JAR="bri.jar"
+
+if [ -f $DESTINATION/$JAR ]
+then
+    rm $DESTINATION/$JAR
+fi
+
+echo "Création de l'archive JAR..."
+cd $SOURCE
+SERVEUR=bri/serveur
+FICHIERS="bri/Connexion.class $SERVEUR/service/IServiceBRI.class $SERVEUR/service/Ressources.class $SERVEUR/utilisateur $SERVEUR/Console.class $SERVEUR/IUtilisateur.class $SERVEUR/Utilisateurs.class"
+jar --create --file $JAR $FICHIERS
+if [ ! $? -eq 0 ]
+then
+    echo "La création de l'archive JAR a échoué."
+    exit
+fi
+echo "Déplacement de l'archive JAR dans le projet \"implementation\"..."
+mv $JAR $DESTINATION/$JAR
+if [ ! $? -eq 0 ]
+then
+    echo "Le déplacement de l'archive JAR a échoué."
+    exit
+fi
+
+echo "Fini."
+cd $INITIAL
