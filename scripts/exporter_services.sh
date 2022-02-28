@@ -2,8 +2,8 @@
 
 INITIAL=$PWD
 cd $(dirname $0)
-SOURCE="../implementation/bin"
-DESTINATION="../apache-ftpserver/res/home"
+SOURCE=$(realpath "../implementation/bin")
+DESTINATION=$(realpath "../apache-ftpserver/res/home")
 
 if [ -d $DESTINATION ]
 then
@@ -29,10 +29,17 @@ then
 fi
 
 echo "Création du fichier JAR pour le service admin/Messagerie..."
-jar cf $DESTINATION/admin/Messagerie.jar $SOURCE/admin/Messagerie.class $SOURCE/admin/Message.class
+cd $SOURCE
+jar --create --file Messagerie.jar admin/Messagerie.class admin/Message.class
 if [ ! $? -eq 0 ]
 then
     echo "La création du fichier JAR a échoué."
+    exit
+fi
+mv Messagerie.jar $DESTINATION/admin/Messagerie.jar
+if [ ! $? -eq 0 ]
+then
+    echo "Le déplacement du fichier JAR sur le serveur a échoué."
     exit
 fi
 

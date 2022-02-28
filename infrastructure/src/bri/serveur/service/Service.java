@@ -2,7 +2,10 @@ package bri.serveur.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import bri.Connexion;
 import bri.serveur.Console;
@@ -11,8 +14,7 @@ import bri.serveur.IUtilisateur;
 
 public class Service implements IService
 {
-    private BRIClassLoader cl;
-    private Class<?> classe_service;
+    private Class<? extends IServiceBRI> classe_service;
     
     private String nom;
     @Override
@@ -31,7 +33,6 @@ public class Service implements IService
         this.auteur = auteur;
         this.actif = false;
         this.classe_service = null;
-        this.cl = null;
     }
 
     private boolean actif;
@@ -65,17 +66,32 @@ public class Service implements IService
     private final void charger_classe_distante() throws ClassNotFoundException, ClassFormatError
     {
         final String nom_classe = this.auteur.pseudo() + '.' + this.nom;
+        ClassLoader cl = null;
         Class<?> classe = null;
-        this.cl = new BRIClassLoader(this.auteur, this.nom + ".jar");
-        try { classe = this.cl.loadClass(nom_classe); }
+        try {
+            cl = URLClassLoader.newInstance(new URL[]{ new URL("ftp://" + this.auteur.ftp() + "/" + this.auteur.pseudo() + "/" + this.nom + ".jar") });
+        } catch (MalformedURLException e3) {
+            // TODO Auto-generated catch block
+            e3.printStackTrace();
+        }
+        try { classe = cl.loadClass(nom_classe); }
         catch (ClassNotFoundException e) 
         {
-            this.cl = new BRIClassLoader(this.auteur, "");
-            try { classe = this.cl.loadClass(nom_classe); }
+            try {
+                cl = URLClassLoader.newInstance(new URL[]{ new URL("ftp://" + this.auteur.ftp() + "/") });
+            } catch (MalformedURLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            try { classe = cl.loadClass(nom_classe); }
             catch (ClassNotFoundException e2)
             { throw new ClassNotFoundException("la classe est introuvable sur le serveur.", e2); }
         }
-        if (IServiceBRI.verifier_norme(classe)) this.classe_service = classe;
+        if (IServiceBRI.verifier_norme(classe))
+        {
+            try { this.classe_service = classe.asSubclass(IServiceBRI.class); }
+            catch (ClassCastException e) { throw new ClassFormatError("impossible d'importer la classe en tant que service BRI."); }
+        }
         else throw new ClassFormatError("la classe ne respecte pas la norme BRI.");
     }
 
