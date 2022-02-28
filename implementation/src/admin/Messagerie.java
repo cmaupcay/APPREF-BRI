@@ -22,8 +22,8 @@ public class Messagerie implements IServiceBRI
         // Importation de la classe Message
         try
         {
-            Class<?> c = Messagerie.class.getClassLoader().loadClass("admin.Message"); // TODO Marche pas
-            MESSAGES_CONSTRUCTEUR = c.asSubclass(Message.class).getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
+            Class<?> message = Messagerie.class.getClassLoader().loadClass("admin.Message");
+            MESSAGES_CONSTRUCTEUR = message.asSubclass(Message.class).getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
         }
         catch (ClassNotFoundException|NoSuchMethodException e) 
         { e.printStackTrace(); }
@@ -31,8 +31,12 @@ public class Messagerie implements IServiceBRI
         // Liste des messages en ressource partagée
         try { MESSAGES = (ArrayList<Message>)Ressources.ressource(MESSAGES_NOM_RESSOURCE); }
         catch (ClassCastException e) { e.printStackTrace(); }
-        if (MESSAGES == null)
-            Ressources.ajouter(MESSAGES_NOM_RESSOURCE, new ArrayList<>());
+        if (MESSAGES == null && Ressources.ajouter(MESSAGES_NOM_RESSOURCE, new ArrayList<>()))
+        {
+            try { MESSAGES = (ArrayList<Message>)Ressources.ressource(MESSAGES_NOM_RESSOURCE); }
+            catch (ClassCastException e) { e.printStackTrace(); }
+        }
+            
     }
 
     private Connexion connexion;

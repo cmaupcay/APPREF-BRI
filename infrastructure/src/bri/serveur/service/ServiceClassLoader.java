@@ -1,6 +1,5 @@
 package bri.serveur.service;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -9,20 +8,30 @@ import bri.serveur.IUtilisateur;
 
 public class ServiceClassLoader extends ClassLoader
 {
-    private URL url;
+    private URLClassLoader loader;
 
     public ServiceClassLoader(final IUtilisateur auteur)
     {
         super(Thread.currentThread().getContextClassLoader());
-        
-        try { this.url = new URL("ftp://" + auteur.ftp() + '/'); }
+        try 
+        { 
+            this.loader = new URLClassLoader(
+                new URL[]{new URL("ftp://" + auteur.ftp() + '/')},
+                this.getParent()
+            );
+        }
         catch (MalformedURLException e) { e.printStackTrace(); }
     }
     public ServiceClassLoader(final IUtilisateur auteur, final String bibliotheque_jar)
     {
         super(Thread.currentThread().getContextClassLoader());
-        
-        try { this.url = new URL("ftp://" + auteur.ftp() + '/' + auteur.pseudo() + '/' + bibliotheque_jar + ".jar"); }
+        try 
+        {
+            this.loader = new URLClassLoader(
+                new URL[]{new URL("ftp://" + auteur.ftp() + '/' + auteur.pseudo() + '/' + bibliotheque_jar + ".jar")}, 
+                this.getParent()
+            );
+        }
         catch (MalformedURLException e) { e.printStackTrace(); }
     }
 
@@ -31,12 +40,10 @@ public class ServiceClassLoader extends ClassLoader
     { 
         try 
         { 
-            URLClassLoader ftp = new URLClassLoader(new URL[]{ this.url }, this.getParent());
-            Class<?> classe = ftp.loadClass(nom);
-            ftp.close();
+            Class<?> classe = this.loader.loadClass(nom);
             return classe;
         }
-        catch (ClassNotFoundException|IOException e)
+        catch (ClassNotFoundException e)
         { return super.loadClass(nom, resoudre); }
     }
 }
