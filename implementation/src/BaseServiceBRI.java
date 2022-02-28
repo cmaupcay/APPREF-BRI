@@ -1,5 +1,3 @@
-package admin;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URLClassLoader;
@@ -7,18 +5,18 @@ import java.net.URLClassLoader;
 import bri.Connexion;
 import bri.serveur.service.IServiceBRI;
 
-public class AnalyseXML implements IServiceBRI
+public class BaseServiceBRI implements IServiceBRI
 {
     static
     {
         // Fermeture du chargement depuis l'URL, indispensable pour un rechargement du service.
-        try { ((URLClassLoader)AnalyseXML.class.getClassLoader()).close(); }
+        try { ((URLClassLoader)BaseServiceBRI.class.getClassLoader()).close(); }
         catch (IOException e) {}
     }
 
     private Connexion connexion;
 
-    public AnalyseXML(Socket connexion) throws IOException
+    public BaseServiceBRI(Socket connexion) throws IOException
     {
         this.connexion = new Connexion(connexion);
     }
@@ -26,6 +24,6 @@ public class AnalyseXML implements IServiceBRI
     @Override
     public final void run()
     {
-        this.connexion.ecrire("ERREUR : Service non implémenté.");   
+        // Programme d'une nouvelle instance du service.
     }
 }

@@ -3,6 +3,7 @@ package admin;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.Socket;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 
 import bri.Connexion;
@@ -19,13 +20,16 @@ public class Messagerie implements IServiceBRI
     private static Constructor<? extends Message> MESSAGES_CONSTRUCTEUR;
     static
     {
-        // Importation de la classe Message
+        // Importation des dépendances
         try
         {
             Class<?> message = Messagerie.class.getClassLoader().loadClass("admin.Message");
             MESSAGES_CONSTRUCTEUR = message.asSubclass(Message.class).getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
+
+            // Fermeture du chargement depuis l'URL, indispensable pour un rechargement du service.
+            ((URLClassLoader)Messagerie.class.getClassLoader()).close();
         }
-        catch (ClassNotFoundException|NoSuchMethodException e) 
+        catch (ClassNotFoundException|NoSuchMethodException|IOException e) 
         { e.printStackTrace(); }
 
         // Liste des messages en ressource partagée
@@ -49,8 +53,7 @@ public class Messagerie implements IServiceBRI
     private static final String[] MODES = 
     {
         "Lire vos messages",
-        "Envoyer un message",
-        "Quitter"
+        "Envoyer un message"
     };
     
     private static final int TENTATIVES_MAX = 3;
@@ -151,8 +154,7 @@ public class Messagerie implements IServiceBRI
                     }
                 }
                 this.connexion.ecrire(Connexion.VRAI);
-                this.connexion.ecrire("Au revoir !");
-            }
+                }
         }
         catch (IOException e) {}
     }
