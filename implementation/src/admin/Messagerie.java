@@ -1,6 +1,7 @@
 package admin;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -8,10 +9,31 @@ import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
 import bri.serveur.service.IServiceBRI;
+import bri.serveur.service.Ressources;
 
 public class Messagerie implements IServiceBRI
 {
     public static final String VERSION = "1.0.0";
+    private static ArrayList<Message> MESSAGES;
+    private static final String MESSAGES_NOM_RESSOURCE = "msg";
+    private static Constructor<? extends Message> MESSAGES_CONSTRUCTEUR;
+    static
+    {
+        // Importation de la classe Message
+        try
+        {
+            Class<?> c = Messagerie.class.getClassLoader().loadClass("admin.Message"); // TODO Marche pas
+            MESSAGES_CONSTRUCTEUR = c.asSubclass(Message.class).getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
+        }
+        catch (ClassNotFoundException|NoSuchMethodException e) 
+        { e.printStackTrace(); }
+
+        // Liste des messages en ressource partagée
+        try { MESSAGES = (ArrayList<Message>)Ressources.ressource(MESSAGES_NOM_RESSOURCE); }
+        catch (ClassCastException e) { e.printStackTrace(); }
+        if (MESSAGES == null)
+            Ressources.ajouter(MESSAGES_NOM_RESSOURCE, new ArrayList<>());
+    }
 
     private Connexion connexion;
 
@@ -20,8 +42,8 @@ public class Messagerie implements IServiceBRI
         this.connexion = new Connexion(connexion);
     }
 
-    private static ArrayList<Message> MESSAGES = new ArrayList<>();
-    private static final String[] MODES = {
+    private static final String[] MODES = 
+    {
         "Lire vos messages",
         "Envoyer un message",
         "Quitter"
@@ -63,7 +85,11 @@ public class Messagerie implements IServiceBRI
                 else this.connexion.ecrire(Connexion.FAUX);
             }
         }
-        else this.connexion.ecrire(Connexion.FAUX); // Le pseudo n'existe pas
+        else // Le pseudo n'existe pas
+        {
+            this.connexion.ecrire(Connexion.FAUX);
+            this.connexion();
+        }
         return false;
     }
 
@@ -107,15 +133,22 @@ public class Messagerie implements IServiceBRI
                         if (destinataire == utilisateurs.size()) continue;
                         final String contenu = this.connexion.demander("Ecrivez votre message : ");
                         this.connexion.ecrire(Connexion.VRAI);
-                        synchronized (MESSAGES)
-                        { MESSAGES.add(new Message(this.utilisateur, utilisateurs.get(destinataire), contenu)); }
-                        this.connexion.ecrire("Message envoyé !");
+                        try 
+                        { 
+                            synchronized (MESSAGES) 
+                            { MESSAGES.add(MESSAGES_CONSTRUCTEUR.newInstance(this.utilisateur, utilisateurs.get(destinataire), contenu)); }
+                            this.connexion.ecrire("Message envoyé !");
+                        }
+                        catch (Exception e) 
+                        { 
+                            this.connexion.ecrire("ERREUR : Impossible d'envoyer le message : " + e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 }
                 this.connexion.ecrire(Connexion.VRAI);
                 this.connexion.ecrire("Au revoir !");
             }
-            this.connexion.fermer();
         }
         catch (IOException e) {}
     }

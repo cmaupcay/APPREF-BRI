@@ -1,5 +1,6 @@
 package bri.serveur.app.session;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import bri.Connexion;
@@ -26,16 +27,18 @@ public class SessionAmateur extends Session
                 s = this.connexion().demander_choix(services_actifs.toArray(), "Quel service voulez-vous utiliser ?");
                 if (s < services_actifs.size())
                 {
-                    service = services_actifs.get(s).nouvelle_instance(this.connexion());
-                    if (service != null) 
-                    {
-                        this.connexion().ecrire(Connexion.VRAI);
-                        service.run();
-                    }
-                    else
+                    try { service = services_actifs.get(s).nouvelle_instance(this.connexion()); }
+                    catch (Exception e) { e.printStackTrace(); }
+                    if (service == null) 
                     {
                         this.connexion().ecrire(Connexion.FAUX);
                         this.connexion().ecrire("ERREUR : Impossible d'ouvrir une nouvelle instance du service.");
+                    }
+                    else
+                    {
+                        this.connexion().ecrire(Connexion.VRAI);
+                        service.run();
+                        service = null;
                     }
                 }
                 else if (s == services_actifs.size())
@@ -45,9 +48,9 @@ public class SessionAmateur extends Session
                 }
                 else this.connexion().ecrire(Connexion.FAUX);
             }
-            this.connexion().fermer();
         }
-        catch (Exception e) { }
+        catch (Exception e) { e.printStackTrace(); }
+        try { this.connexion().fermer(); } catch (IOException e) {}
         Console.afficher(this.parent(), "Session terminée.");
     }
 }

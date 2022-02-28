@@ -30,18 +30,30 @@ public class Utilisateur implements IUtilisateur
     @Override
     public final String toString() { return this.pseudo() + " (" + this.getClass().getSimpleName() + ')'; }
 
-    private boolean proposer_promotion(Connexion connexion) throws IOException
+    private final boolean rang_different(Connexion connexion)
     {
-        connexion.ecrire("ATTENTION : Une promotion supprime le compte précédent.");
-        final String choix = connexion.demander("Promouvoir " + this.pseudo + " au rang " + this.getClass().getSimpleName() + " (o/n) ? ");
-        connexion.ecrire(Connexion.VRAI);
-        if (choix.toLowerCase().equals("o"))
+        for (IUtilisateur u : Utilisateurs.liste())
+            if (u.pseudo().equals(this.pseudo))
+                return !u.getClass().equals(this.getClass());
+        return true;
+    }
+
+    private final boolean proposer_promotion(Connexion connexion) throws IOException
+    {
+        if (this.rang_different(connexion))
         {
-            Utilisateurs.supprimer(this.pseudo());
-            return true;
+            connexion.ecrire("ATTENTION : Une promotion supprime le compte précédent.");
+            final String choix = connexion.demander("Promouvoir " + this.pseudo + " au rang " + this.getClass().getSimpleName() + " (o/n) ? ");
+            connexion.ecrire(Connexion.VRAI);
+            if (choix.toLowerCase().equals("o"))
+            {
+                Utilisateurs.supprimer(this.pseudo());
+                return true;
+            }
+            connexion.ecrire("Désolé, vous allez devoir choisir un autre pseudo. :(");
+            return false;
         }
-        connexion.ecrire("Désolé, vous allez devoir choisir un autre pseudo. :(");
-        return false;
+        else return false;
     }
 
     public Utilisateur(Connexion connexion) throws IOException

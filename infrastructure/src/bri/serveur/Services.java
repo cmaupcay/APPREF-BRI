@@ -33,6 +33,7 @@ public abstract class Services
                 if (!s.auteur().equals(auteur)) return false;
                 if (s.actif()) return false;
                 services.remove(s);
+                Console.afficher("Service supprimé : " + auteur.pseudo() + '/' + nom);
                 return true;
             }
         }

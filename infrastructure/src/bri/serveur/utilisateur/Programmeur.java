@@ -23,5 +23,6 @@ public class Programmeur extends Utilisateur
     {
         super(connexion);
         this.ftp = connexion.demander("URL du serveur FTP : ");
+        connexion.ecrire(Connexion.VRAI);
     }
 }
