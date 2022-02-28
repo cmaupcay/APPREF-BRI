@@ -2,10 +2,7 @@ package bri.serveur.service;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import bri.Connexion;
 import bri.serveur.Console;
@@ -68,21 +65,11 @@ public class Service implements IService
         final String nom_classe = this.auteur.pseudo() + '.' + this.nom;
         ClassLoader cl = null;
         Class<?> classe = null;
-        try {
-            cl = URLClassLoader.newInstance(new URL[]{ new URL("ftp://" + this.auteur.ftp() + "/" + this.auteur.pseudo() + "/" + this.nom + ".jar") });
-        } catch (MalformedURLException e3) {
-            // TODO Auto-generated catch block
-            e3.printStackTrace();
-        }
+        cl = new ServiceClassLoader(this.auteur, this.nom);
         try { classe = cl.loadClass(nom_classe); }
         catch (ClassNotFoundException e) 
         {
-            try {
-                cl = URLClassLoader.newInstance(new URL[]{ new URL("ftp://" + this.auteur.ftp() + "/") });
-            } catch (MalformedURLException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+            cl = new ServiceClassLoader(this.auteur);
             try { classe = cl.loadClass(nom_classe); }
             catch (ClassNotFoundException e2)
             { throw new ClassNotFoundException("la classe est introuvable sur le serveur.", e2); }
