@@ -20,25 +20,24 @@ public interface IServiceBRI extends Runnable
      */
     public static boolean verifier_norme(Class<?> classe)
     {
-        return true;
-        // final Class<?>[] interfaces = classe.getInterfaces();
-        // for (Class<?> i : interfaces)
-        // {
-        //     if (i == IServiceBRI.class)
-        //     {
-        //         final int mod = classe.getModifiers();
-        //         if (!Modifier.isPublic(mod)) return false;
-        //         if (Modifier.isAbstract(mod)) return false;
-        //         try 
-        //         { 
-        //             classe.getDeclaredConstructor(Socket.class);
-        //             // final Method toStringue = classe.getMethod("toStringue");
-        //             // if (toStringue.getExceptionTypes().length > 0) return false;
-        //             return true;
-        //         }
-        //         catch (NoSuchMethodException e) { return false; }
-        //     }
-        // }
-        // return false;
+        final Class<?>[] interfaces = classe.getInterfaces();
+        for (Class<?> i : interfaces)
+        {
+            if (i == IServiceBRI.class)
+            {
+                final int mod = classe.getModifiers();
+                if (!Modifier.isPublic(mod)) return false;
+                if (Modifier.isAbstract(mod)) return false;
+                try 
+                { 
+                    classe.getDeclaredConstructor(Socket.class);
+                    // final Method toStringue = classe.getMethod("toStringue");
+                    // if (toStringue.getExceptionTypes().length > 0) return false;
+                    return true;
+                }
+                catch (NoSuchMethodException e) { return false; }
+            }
+        }
+        return false;
     }
 }

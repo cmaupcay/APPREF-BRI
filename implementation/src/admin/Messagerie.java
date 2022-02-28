@@ -11,10 +11,10 @@ import bri.serveur.service.IServiceBRI;
 
 public class Messagerie implements IServiceBRI
 {
-    static
-    {
-        Messagerie.class.getClassLoader().loadClass("admin.Message");
-    }
+    // static
+    // {
+    //     Messagerie.class.getClassLoader().loadClass("admin.Message");
+    // }
 
     private Connexion connexion;
 
