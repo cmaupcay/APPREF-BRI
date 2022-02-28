@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class Connexion 
 {
@@ -82,10 +83,19 @@ public class Connexion
     }
     public final String demander_fichier(final String message) throws IOException
     { return demander(FICHIER + "\n" + message); }
+    public static final String RETOUR = "[/] Retour";
+    private static final Object[] menu(final Object[] tableau)
+    {
+        Object[] menu = new Object[tableau.length + 1];
+        for (int i = 0; i < tableau.length; i++)
+            menu[i] = tableau[i];
+        menu[tableau.length] = RETOUR;
+        return menu;   
+    }
     public final int demander_choix(final Object[] tableau, final String message) throws IOException
     {
         this.sortie.println(DEMANDE);
-        this.ecrire(tableau);
+        this.ecrire(menu(tableau));
         this.sortie.println(message);
         this.sortie.flush();
         int i = 0;

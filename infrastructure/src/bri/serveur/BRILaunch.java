@@ -8,6 +8,7 @@ import bri.serveur.utilisateur.Programmeur;
 
 public class BRILaunch 
 {
+    public static final String VERSION = "alpha";
     private static ArrayList<IApp> apps = new ArrayList<>();
 
     private static void ajouter_app(IApp app)

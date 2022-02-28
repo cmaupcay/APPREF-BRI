@@ -18,6 +18,7 @@ public class Programmeur extends Mode
     {
         try 
         { 
+            Console.afficher(connexion.lire());            // Message d'intro
             final String pseudo = repondre_a_demande(connexion);    // Pseudo
             String reponse = connexion.lire();
             if (reponse.equals(Connexion.VRAI))            // Le pseudo existe

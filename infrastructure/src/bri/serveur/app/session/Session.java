@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import bri.Connexion;
+import bri.serveur.BRILaunch;
 import bri.serveur.Console;
 import bri.serveur.IApp;
 import bri.serveur.app.ISession;
@@ -34,6 +35,7 @@ public abstract class Session implements ISession
         this.connexion = connexion;
         this.actions = new ArrayList<>();
         this.thread = new Thread(this);
+        connexion.ecrire("Plateforme BRI - version " + BRILaunch.VERSION);
         this.thread.start();
         Console.afficher(parent, "Session démarrée.");
     }

@@ -6,6 +6,7 @@ import bri.Connexion;
 import bri.serveur.Console;
 import bri.serveur.IService;
 import bri.serveur.Services;
+import bri.serveur.app.session.actions.Quitter;
 import bri.serveur.service.IServiceBRI;
 
 public class SessionAmateur extends Session
@@ -37,8 +38,14 @@ public class SessionAmateur extends Session
                         this.connexion().ecrire("ERREUR : Impossible d'ouvrir une nouvelle instance du service.");
                     }
                 }
+                else if (s == services_actifs.size())
+                {
+                    this.connexion().ecrire(Connexion.VRAI);
+                    continuer = (new Quitter(this)).executer(this.connexion(), null);
+                }
                 else this.connexion().ecrire(Connexion.FAUX);
             }
+            this.connexion().fermer();
         }
         catch (Exception e) { }
         Console.afficher(this.parent(), "Session terminée.");

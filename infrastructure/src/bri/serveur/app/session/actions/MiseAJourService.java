@@ -27,6 +27,7 @@ public class MiseAJourService extends Action
             final Object[] services = Services.services_publies(auteur).toArray();
             final int s = connexion.demander_choix(services, "Quel service souhaitez-vous mettre à jour ?");
             connexion.ecrire(Connexion.VRAI);
+            if (s == services.length) return true;
             final IService service = (IService)services[s];
             boolean activer = false;
             if (service.actif())

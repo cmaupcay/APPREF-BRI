@@ -31,6 +31,11 @@ public class AjoutUtilisateur extends Action
         try
         {
             final int type = connexion.demander_choix(TYPES, "Quel type d'utilisateur souhaitez-vous ajouter ?");
+            if (type == TYPES.length)
+            {
+                connexion.ecrire(Connexion.VRAI);
+                return true;
+            }
             Class<?> classe_utilisateur = null;
             try { classe_utilisateur = Class.forName(TYPES_PACKAGE + '.' + TYPES[type]); }
             catch (ClassNotFoundException e)

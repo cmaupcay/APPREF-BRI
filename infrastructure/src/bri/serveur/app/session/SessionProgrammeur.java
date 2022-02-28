@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import bri.Connexion;
+import bri.serveur.BRILaunch;
 import bri.serveur.Console;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
@@ -47,7 +48,6 @@ public class SessionProgrammeur extends Session
         this.actions().add(new ChangerAdresseFTP(this));
         this.actions().add(new AjoutUtilisateur(this));
         this.actions().add(new SuppressionUtilisateur(this));
-        this.actions().add(new Quitter(this));
     }
 
     @Override
@@ -79,6 +79,11 @@ public class SessionProgrammeur extends Session
                                 continuer = this.actions().get(action).executer(this.connexion(), new String[]{
                                     pseudo // Les actions de programmeur attendent le pseudo de l'utilisateur en premier argument.
                                 });
+                            }
+                            else if (action == this.actions().size()) // Quitter
+                            {
+                                this.connexion().ecrire(Connexion.VRAI);
+                                continuer = (new Quitter(this)).executer(this.connexion(), null);
                             }
                             else this.connexion().ecrire(Connexion.FAUX);
                         }

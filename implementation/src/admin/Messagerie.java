@@ -89,23 +89,26 @@ public class Messagerie implements IServiceBRI
                             if (m.destinataire().equals(this.utilisateur))
                                 messages.add(m);
                         }
-                        Object[] menu = new Object[messages.size() + 1];
                         final int selection = this.connexion.demander_choix(messages.toArray(), "Quel message voulez-vous consulter ?");
                         this.connexion.ecrire(Connexion.VRAI);
+                        if (selection == messages.size()) continue;
                         final Message message = messages.get(selection);
                         this.connexion.ecrire(message.afficher());
                         message.lire();
-                        this.connexion.demander("-- Appuyez sur une touche pour quitter --");
+                        this.connexion.demander(Connexion.RETOUR);
                         this.connexion.ecrire(Connexion.VRAI);
                     }
                     else if (mode == 1)     // Ecriture
                     {
-                        final int destinataire = this.connexion.demander_choix(Utilisateurs.liste().toArray(), "A qui voulez vous envoyer un message ?");
+                        final ArrayList<IUtilisateur> utilisateurs = Utilisateurs.liste();
+                        final int destinataire = this.connexion.demander_choix(utilisateurs.toArray(), "A qui voulez vous envoyer un message ?"
+                        );
                         this.connexion.ecrire(Connexion.VRAI);
+                        if (destinataire == utilisateurs.size()) continue;
                         final String contenu = this.connexion.demander("Ecrivez votre message : ");
                         this.connexion.ecrire(Connexion.VRAI);
                         synchronized (MESSAGES)
-                        { MESSAGES.add(new Message(this.utilisateur, Utilisateurs.liste().get(destinataire), contenu)); }
+                        { MESSAGES.add(new Message(this.utilisateur, utilisateurs.get(destinataire), contenu)); }
                         this.connexion.ecrire("Message envoyé !");
                     }
                 }

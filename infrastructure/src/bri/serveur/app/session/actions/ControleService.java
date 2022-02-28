@@ -31,6 +31,7 @@ public class ControleService extends Action
             {
                 s = connexion.demander_choix(services, "De quel service souhaitez-vous modifier l'état ?");
                 connexion.ecrire(Connexion.VRAI);
+                if (s == services.length) return true;
             } 
             final IService service = (IService)services[s];
             String action = "", succes = "", erreur = "";

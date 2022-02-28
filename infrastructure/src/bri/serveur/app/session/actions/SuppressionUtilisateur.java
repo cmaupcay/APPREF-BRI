@@ -20,6 +20,7 @@ public class SuppressionUtilisateur extends Action
         {
             final int utilisateur = connexion.demander_choix(Utilisateurs.liste().toArray(), "Quel utilisateur souhaitez-vous supprimer ?");
             connexion.ecrire(Connexion.VRAI);
+            if (utilisateur == Utilisateurs.liste().size()) return true;
             Utilisateurs.supprimer(Utilisateurs.liste().get(utilisateur).pseudo());
             connexion.ecrire("Utilisateur supprimé !");
             return true;

@@ -27,6 +27,7 @@ public class SuppressionService extends Action
             final Object[] services = Services.services_publies(auteur).toArray();
             final int s = connexion.demander_choix(services, "Quel service souhaitez-vous supprimer ?");
             connexion.ecrire(Connexion.VRAI);
+            if (s == services.length) return true;
             final IService service = (IService)services[s];
             if (service.actif())
                 if (!this.controle_activite_service(connexion, arguments[0], s)) return true;

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Exportation des implémentations du programmeur admin.
+# Publication des implémentations du programmeur admin sur son serveur FTP.
 
 INITIAL=$PWD
 cd $(dirname $0)
