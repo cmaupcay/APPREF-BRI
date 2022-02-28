@@ -38,7 +38,7 @@ public class Client
             message = connexion.tampon();
             if (message.equals(Connexion.FICHIER)) // Demande d'un fichier
             {
-                // TODO
+                // TODO Demande de fichier
                 // try { Console.demander(connexion.lire(), false); }
                 // catch (IOException e)
                 // {

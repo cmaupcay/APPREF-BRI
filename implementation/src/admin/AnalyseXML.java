@@ -26,6 +26,7 @@ public class AnalyseXML implements IServiceBRI
     @Override
     public final void run()
     {
+        // TODO Implémentation
         this.connexion.ecrire("ERREUR : Service non implémenté.");   
     }
 }
