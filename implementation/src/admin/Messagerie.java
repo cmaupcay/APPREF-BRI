@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import admin.messagerie.IMenu;
-import admin.messagerie.Message;
 import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
@@ -22,11 +21,13 @@ public class Messagerie implements IServiceBRI
 {
     /** Version du service BRI. */
     public static final String VERSION = "1.0.0";
+
     /** Référence à la liste des messages (ressource partagée). */
-    private static List<Message> MESSAGES;
+    private static List<String> MESSAGES;
     /** Nom de la ressource partagée associée à la liste des messages. */
     private static final String MESSAGES_NOM_RESSOURCE = "msg";
 
+    /** Menu de la messagerie. */
     private static List<IMenu> MENU;
 
     static
@@ -47,13 +48,12 @@ public class Messagerie implements IServiceBRI
             // Fermeture du chargement depuis l'URL, indispensable pour un rechargement du service.
             ((URLClassLoader)Messagerie.class.getClassLoader()).close();
 
-            // TODO Les messages doivent être sérialisés avant d'être stocké pour garantir que toutes les versions de la messagerie pourront les lire.
             // Récupération de la ressource partagée associée à la liste des messages.
-            try { MESSAGES = (List<Message>)Ressources.ressource(MESSAGES_NOM_RESSOURCE); }
+            try { MESSAGES = (List<String>)Ressources.ressource(MESSAGES_NOM_RESSOURCE); }
             catch (ClassCastException e) { e.printStackTrace(); }
             // Si la ressource n'existe pas, on la créer et on récupère la référence.
             if (MESSAGES == null && Ressources.ajouter(MESSAGES_NOM_RESSOURCE, new ArrayList<>()))
-                MESSAGES = (List<Message>)Ressources.ressource(MESSAGES_NOM_RESSOURCE);
+                MESSAGES = (List<String>)Ressources.ressource(MESSAGES_NOM_RESSOURCE);
         }
         catch (Exception e) { e.printStackTrace(); }
     }

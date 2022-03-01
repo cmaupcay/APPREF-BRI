@@ -10,6 +10,7 @@ import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
 
+// TOCOMMENT
 public class Ecriture implements IMenu
 {
     /** Constructeur des messages. */
@@ -26,7 +27,7 @@ public class Ecriture implements IMenu
     }
 
     @Override
-    public final void executer(final List<Message> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException
+    public final void executer(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException
     {
         // Choix du destinataire dans la liste des utilisateurs.
         final List<IUtilisateur> utilisateurs = Utilisateurs.liste();
@@ -42,7 +43,7 @@ public class Ecriture implements IMenu
         try 
         { 
             synchronized (messages) 
-            { messages.add(MESSAGES_CONSTRUCTEUR.newInstance(utilisateur, utilisateurs.get(destinataire), contenu)); }
+            { messages.add((MESSAGES_CONSTRUCTEUR.newInstance(utilisateur, utilisateurs.get(destinataire), contenu)).exporter()); }
             connexion.ecrire("Message envoyé !");
         }
         catch (Exception e) 

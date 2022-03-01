@@ -11,5 +11,6 @@ import bri.serveur.IUtilisateur;
  */
 public interface IMenu
 {
-    public void executer(final List<Message> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException;    
+    // TOCOMMENT executer
+    public void executer(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException;    
 }
