@@ -7,6 +7,9 @@ import java.net.URLClassLoader;
 import bri.Connexion;
 import bri.serveur.service.IServiceBRI;
 
+/**
+ * Service BRI d'inversion de chaînes de caractères.
+ */
 public class Inversion implements IServiceBRI
 {
     static
@@ -16,8 +19,14 @@ public class Inversion implements IServiceBRI
         catch (IOException e) {}
     }
 
+    /** Connexion cliente. */
     private Connexion connexion;
 
+    /**
+     * Construction d'une instance du service BRI.
+     * @param connexion Socket client ouvert et connecté.
+     * @throws IOException Impossible d'ouvrir la connexion depuis le socket client.
+     */
     public Inversion(Socket connexion) throws IOException
     {
         this.connexion = new Connexion(connexion);
@@ -28,15 +37,17 @@ public class Inversion implements IServiceBRI
     {
         try
         {
+            // Boucle de question-réponse.
             while (true)
             {
                 String message = this.connexion.demander("Entrez un message à inverser : ");
+                if (message == null) break;
                 this.connexion.ecrire(Connexion.VRAI);
                 if (message.length() == 0) break;
                 message = (new StringBuilder(message)).reverse().toString();
                 this.connexion.ecrire("Message inversé : " + message);
             }
         }
-        catch (IOException|NullPointerException e) {}
+        catch (Exception e) {}
     }   
 }

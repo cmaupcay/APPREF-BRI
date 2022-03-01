@@ -5,18 +5,27 @@ import java.net.URLClassLoader;
 import bri.Connexion;
 import bri.serveur.service.IServiceBRI;
 
-public class BaseServiceBRI implements IServiceBRI
+/**
+ * Classe d'exemple d'un service BRI.
+ */
+public class ExempleServiceBRI implements IServiceBRI
 {
     static
     {
         // Fermeture du chargement depuis l'URL, indispensable pour un rechargement du service.
-        try { ((URLClassLoader)BaseServiceBRI.class.getClassLoader()).close(); }
+        try { ((URLClassLoader)ExempleServiceBRI.class.getClassLoader()).close(); }
         catch (IOException e) {}
     }
 
+    /** Connexion cliente. */
     private Connexion connexion;
 
-    public BaseServiceBRI(Socket connexion) throws IOException
+    /**
+     * Construction d'une instance du service BRI.
+     * @param connexion Socket client ouvert et connecté.
+     * @throws IOException Impossible d'ouvrir la connexion depuis le socket client.
+     */
+    public ExempleServiceBRI(Socket connexion) throws IOException
     {
         this.connexion = new Connexion(connexion);
     }

@@ -28,24 +28,6 @@ public class SessionProgrammeur extends Session
     private IUtilisateur utilisateur;
 
     /**
-     * Vérification de l'existence du pseudo d'un utilisateur.
-     * @param pseudo Pseudo de l'utilisateur cible.
-     * @return Indique l'existence du pseudo dans la liste des utilisateurs.
-     */
-    private final boolean verifier_pseudo(final String pseudo)
-    {
-        List<IUtilisateur> utilisateurs = Utilisateurs.liste();
-        for (IUtilisateur u : utilisateurs)
-        {
-            if (u.getClass() == Programmeur.class && u.pseudo().equals(pseudo))
-            {
-                this.utilisateur = u;
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
      * Vérification du mot de passe de l'utilisateur authentifié.
      * @param mdp Mot de passe à vérifier.
      * @return Indique si les mots de passe sont similaires.
@@ -74,7 +56,9 @@ public class SessionProgrammeur extends Session
         {
             // AUTHENTIFICATION
             final String pseudo = this.connexion().demander("Utilisateur : ");
-            if (this.verifier_pseudo(pseudo)) // Vérification du pseudo.
+            this.utilisateur = Utilisateurs.utilisateur(pseudo);
+            if (this.utilisateur == null) this.connexion().ecrire(Connexion.FAUX); // Le pseudo n'existe pas
+            else
             {
                 this.connexion().ecrire(Connexion.VRAI);
                 int tentatives = 0;
@@ -119,7 +103,6 @@ public class SessionProgrammeur extends Session
                     }
                 }
             }
-            else this.connexion().ecrire(Connexion.FAUX); // Le pseudo n'existe pas
             this.connexion().fermer();
         }
         catch (IOException e)

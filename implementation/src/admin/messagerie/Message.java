@@ -1,4 +1,4 @@
-package admin;
+package admin.messagerie;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

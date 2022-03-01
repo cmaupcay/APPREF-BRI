@@ -7,6 +7,9 @@ import java.net.URLClassLoader;
 import bri.Connexion;
 import bri.serveur.service.IServiceBRI;
 
+/**
+ * Service BRI d'analyse de fichier XML.
+ */
 public class AnalyseXML implements IServiceBRI
 {
     static
@@ -16,8 +19,14 @@ public class AnalyseXML implements IServiceBRI
         catch (IOException e) {}
     }
 
+    /** Connexion cliente. */
     private Connexion connexion;
 
+    /**
+     * Construction d'une instance du service BRI.
+     * @param connexion Socket client ouvert et connecté.
+     * @throws IOException Impossible d'ouvrir la connexion depuis le socket client.
+     */
     public AnalyseXML(Socket connexion) throws IOException
     {
         this.connexion = new Connexion(connexion);

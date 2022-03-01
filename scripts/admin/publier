@@ -31,7 +31,7 @@ fi
 
 echo "Création du fichier JAR pour le service admin/Messagerie..."
 cd $SOURCE
-jar --create --file Messagerie.jar admin/Messagerie.class admin/Message.class
+jar --create --file Messagerie.jar admin/Messagerie.class admin/messagerie
 if [ ! $? -eq 0 ]
 then
     echo "La création du fichier JAR a échoué."
