@@ -1,7 +1,6 @@
 package bri.serveur.service;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 
 import bri.Connexion;
@@ -115,7 +114,7 @@ public class Service implements IService
         }
         catch (ClassNotFoundException|ClassFormatError e)
         {
-            Console.afficher(this, "ERREUR : Impossible de charger la classe distante : " + e.getMessage());
+            Console.afficher(this, "| ERREUR | Impossible de charger la classe distante : " + e.getMessage());
             return false;
         }
     }
@@ -135,16 +134,15 @@ public class Service implements IService
             }
             catch (NoSuchMethodException e)
             { 
-                try { c = classe.getDeclaredConstructor(Socket.class); }
-                catch (NoSuchMethodException e2) { throw new InstantiationException() ; }
+                c = classe.getDeclaredConstructor(Socket.class);
                 service = (IServiceBRI)c.newInstance(connexion.socket());
             }
             Console.afficher(this, "Nouvelle instance du service créée.");
             return service;
         }
-        catch (ClassNotFoundException|InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException e)
+        catch (Exception e)
         {
-            Console.afficher(this, "ERREUR : Impossible d'instancier le service.");
+            Console.afficher(this, "| ERREUR | Impossible d'instancier le service : " + e.getMessage());
             return null;
         }
     }

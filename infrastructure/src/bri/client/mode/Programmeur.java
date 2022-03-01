@@ -38,22 +38,22 @@ public class Programmeur extends Mode
                         return true;
                     }
                     else if (reponse.equals(Connexion.FAUX))
-                        Console.afficher("ERREUR : Mot de passe incorrect.");
+                        Console.afficher("| ERREUR | Mot de passe incorrect.");
                     else
                     {
-                        Console.afficher("ERREUR : Réponse incohérente du serveur : " + reponse);
+                        Console.afficher("| ERREUR | Réponse incohérente du serveur : " + reponse);
                         return false;
                     }
                 }
             }
             else if (reponse.equals(Connexion.FAUX))                // Connexion refusée
             {
-                Console.afficher("ERREUR : Utilisateur inconnu.");
+                Console.afficher("| ERREUR | Utilisateur inconnu.");
                 return this.accepter_connexion(connexion);
             }
             else
             {
-                Console.afficher("ERREUR : Réponse incohérente du serveur : " + reponse);
+                Console.afficher("| ERREUR | Réponse incohérente du serveur : " + reponse);
                 return false;
             }
         }

@@ -148,7 +148,7 @@ public class Messagerie implements IServiceBRI
                         }
                         catch (Exception e) 
                         { 
-                            this.connexion.ecrire("ERREUR : Impossible d'envoyer le message : " + e.getMessage());
+                            this.connexion.ecrire("| ERREUR | Impossible d'envoyer le message : " + e.getMessage());
                             e.printStackTrace();
                         }
                     }

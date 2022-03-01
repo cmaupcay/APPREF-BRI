@@ -47,7 +47,7 @@ public class Client
         try { elements = connexion.lire_tableau(); }
         catch (IOException e)
         {
-            Console.afficher("ERREUR : Impossible de charger les éléments distants.");
+            Console.afficher("| ERREUR | Impossible de charger les éléments distants : " + e.getMessage());
             return false;
         }
         if (elements == null)   // Demande d'une ligne
@@ -59,7 +59,7 @@ public class Client
                 // try { Console.demander(connexion.lire(), false); }
                 // catch (IOException e)
                 // {
-                //     Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
+                //     Console.afficher("| ERREUR | Impossible de lire le message associé à la demande : " + e.getMessage());
                 //     return false;
                 // }
                 // String fichier = 
@@ -71,7 +71,7 @@ public class Client
             try { message = connexion.lire(); }
             catch (IOException e)
             {
-                Console.afficher("ERREUR : Impossible de lire le message associé à la demande.");
+                Console.afficher("| ERREUR | Impossible de lire le message associé à la demande : " + e.getMessage());
                 return false;
             }
             int index = Console.choisir(elements, message);
@@ -80,17 +80,17 @@ public class Client
         try { message = connexion.lire(); }
         catch (IOException e)
         {
-            Console.afficher("ERREUR : Impossible de lire la réponse du serveur.");
+            Console.afficher("| ERREUR | Impossible de lire la réponse du serveur : " + e.getMessage());
             return false;
         }
         switch (message)
         {
         case Connexion.FAUX: // L'erreur n'est pas fatale
-            Console.afficher("ERREUR : Votre réponse a été refusée par le serveur.");
+            Console.afficher("| ERREUR | Votre réponse a été refusée par le serveur.");
         case Connexion.VRAI:
             return true;
         default:
-            Console.afficher("ERREUR : La réponse du serveur est incohérente : " + message);
+            Console.afficher("| ERREUR | La réponse du serveur est incohérente : " + message);
             return false;
         }
     }
@@ -117,15 +117,15 @@ public class Client
                         else Console.afficher(tmp);
                     }
                     catch (NullPointerException e)
-                    { Console.afficher("ERREUR : La connexion a été fermée par le serveur."); }
+                    { Console.afficher("| ERREUR | La connexion a été fermée par le serveur."); }
                 }
             }
-            else Console.afficher("ERREUR : Connexion refusée par le mode.");
+            else Console.afficher("| ERREUR | Connexion refusée par le mode.");
             connexion.fermer();
         }
         catch (UnknownHostException e)
-        { Console.afficher("ERREUR : Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
+        { Console.afficher("| ERREUR | Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
         catch (IOException e)
-        { Console.afficher("ERREUR :Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
+        { Console.afficher("| ERREUR |Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
     }   
 }

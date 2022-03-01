@@ -57,7 +57,7 @@ public class BRILaunch
         {
             try { app.thread().join(); }
             catch (InterruptedException e)
-            { Console.afficher(app, "ERREUR : L'application a été interrompue."); }
+            { Console.afficher(app, "| ERREUR | L'application a été interrompue : " + e.getMessage()); }
         }
 
         Console.afficher("Serveur BRI fermé.");

@@ -17,12 +17,21 @@ import bri.serveur.app.session.actions.SuppressionService;
 import bri.serveur.app.session.actions.SuppressionUtilisateur;
 import bri.serveur.utilisateur.Programmeur;
 
-// TOCOMMENT SessionProg
+/**
+ * Session de l'application destinée aux programmeurs.
+ */
 public class SessionProgrammeur extends Session
 {
+    /** Nombre de tentatives de connexion autorisées pour une connexion. */
     private static final int TENTATIVES_MAX = 3;
+    /** Utilisateur authentifié dans la session. */
     private IUtilisateur utilisateur;
 
+    /**
+     * Vérification de l'existence du pseudo d'un utilisateur.
+     * @param pseudo Pseudo de l'utilisateur cible.
+     * @return Indique l'existence du pseudo dans la liste des utilisateurs.
+     */
     private final boolean verifier_pseudo(final String pseudo)
     {
         List<IUtilisateur> utilisateurs = Utilisateurs.liste();
@@ -36,9 +45,17 @@ public class SessionProgrammeur extends Session
         }
         return false;
     }
+    /**
+     * Vérification du mot de passe de l'utilisateur authentifié.
+     * @param mdp Mot de passe à vérifier.
+     * @return Indique si les mots de passe sont similaires.
+     */
     private final boolean verifier_mdp(final String mdp)
     { return this.utilisateur.mdp().equals(mdp); }
 
+    /**
+     * Ajout des actions de session à la liste des actions.
+     */
     private final void charger_actions()
     {
         this.actions().add(new AjoutService(this));
@@ -55,40 +72,47 @@ public class SessionProgrammeur extends Session
     {
         try
         {
+            // AUTHENTIFICATION
             final String pseudo = this.connexion().demander("Utilisateur : ");
-            if (this.verifier_pseudo(pseudo))
+            if (this.verifier_pseudo(pseudo)) // Vérification du pseudo.
             {
                 this.connexion().ecrire(Connexion.VRAI);
                 int tentatives = 0;
+                // Boucle de tentative de connexion.
                 while (tentatives++ < TENTATIVES_MAX)
                 {
-                    if (this.verifier_mdp(this.connexion().demander("Mot de passe : ")))
+                    if (this.verifier_mdp(this.connexion().demander("Mot de passe : "))) // Vérification du mot de passe.
                     {
+                        // Authentification réussi.
                         tentatives = TENTATIVES_MAX;
                         this.connexion().ecrire(Connexion.VRAI);
                         Console.afficher(this.parent(), "Nouvelle connexion : " + pseudo + ".");
+
                         this.charger_actions();
                         int action;
                         boolean continuer = true;
+                        // Boucle de choix de l'action à effectuer.
                         while (continuer)
                         {
                             action = this.connexion().demander_choix(this.actions().toArray(), "Que voulez-vous faire ?");
                             if (action < this.actions().size())
                             {
+                                // Lancement de l'action de session dans la session.
                                 this.connexion().ecrire(Connexion.VRAI);
                                 continuer = this.actions().get(action).executer(this.connexion(), new String[]{
                                     pseudo // Les actions de programmeur attendent le pseudo de l'utilisateur en premier argument.
                                 });
                             }
-                            else if (action == this.actions().size()) // Quitter
+                            else if (action == this.actions().size())
                             {
                                 this.connexion().ecrire(Connexion.VRAI);
+                                // Quitte la session en fermant la boucle de choix.
                                 continuer = (new Quitter(this)).executer(this.connexion(), null);
                             }
-                            else this.connexion().ecrire(Connexion.FAUX);
+                            else this.connexion().ecrire(Connexion.FAUX); // Choix incohérent.
                         }
                     }
-                    else
+                    else // Mot de passe incorrect.
                     {
                         Console.afficher(this.parent(), "Tentative de connexion : " + pseudo + " (" + tentatives + '/' + TENTATIVES_MAX + ").");
                         this.connexion().ecrire(Connexion.FAUX);
@@ -100,7 +124,7 @@ public class SessionProgrammeur extends Session
         }
         catch (IOException e)
         {
-            Console.afficher("ERREUR : Impossible de lire les informations de la connexion.");
+            Console.afficher("| ERREUR | Impossible de lire les informations de la connexion : " + e.getMessage());
         }
         Console.afficher(this.parent(), "Session terminée.");
     }

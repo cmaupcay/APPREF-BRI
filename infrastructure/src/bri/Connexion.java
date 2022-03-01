@@ -147,6 +147,7 @@ public class Connexion
     { return demander(FICHIER + "\n" + message); }
     /**
      * Ecriture dans la sortie des instructions de selection dans un tableau et lecture de la réponse.
+     * Le tableau de choix est étendu en menu (ajout d'un choix de retour en fin de tableau).
      * @param tableau Tableau dans lequel demander le choix.
      * @param message Message associé à la demande.
      * @return Indice dans le tableau du choix lu sur l'entrée.
