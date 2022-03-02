@@ -10,7 +10,9 @@ import bri.Connexion;
 import bri.serveur.IUtilisateur;
 import bri.serveur.Utilisateurs;
 
-// TOCOMMENT
+/**
+ * Menu d'écriture et d'envoi d'un message.
+ */
 public class Ecriture implements IMenu
 {
     /** Constructeur des messages. */
@@ -21,13 +23,14 @@ public class Ecriture implements IMenu
         try
         {
             // Définition du constructeur de message.
-            MESSAGES_CONSTRUCTEUR = Message.class.getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
+            final Class<? extends Message> classe_message = Ecriture.class.getClassLoader().loadClass("admin.messagerie.Message").asSubclass(Message.class);
+            MESSAGES_CONSTRUCTEUR = classe_message.getConstructor(IUtilisateur.class, IUtilisateur.class, String.class);
         }
         catch (Exception e) { e.printStackTrace(); }
     }
 
     @Override
-    public final void executer(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException
+    public final void ouvrir(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException
     {
         // Choix du destinataire dans la liste des utilisateurs.
         final List<IUtilisateur> utilisateurs = Utilisateurs.liste();

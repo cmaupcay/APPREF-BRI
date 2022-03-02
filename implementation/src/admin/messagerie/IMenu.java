@@ -7,10 +7,16 @@ import bri.Connexion;
 import bri.serveur.IUtilisateur;
 
 /**
- * Interface des sous menus de la messagerie.
+ * Interface des menus de la messagerie.
  */
 public interface IMenu
 {
-    // TOCOMMENT executer
-    public void executer(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException;    
+    /**
+     * Ouverture du menu.
+     * @param messages Liste des messages sérialisés.
+     * @param connexion Connexion cliente ouverte et connectée.
+     * @param utilisateur Utilisateur authentifié.
+     * @throws IOException Impossible de lire les informations de connexion.
+     */
+    public void ouvrir(final List<String> messages, final Connexion connexion, final IUtilisateur utilisateur) throws IOException;    
 }

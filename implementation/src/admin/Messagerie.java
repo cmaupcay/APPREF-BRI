@@ -133,7 +133,7 @@ public class Messagerie implements IServiceBRI
                 while ((sous_menu = this.connexion.demander_choix(MENU.toArray(), "Que voulez-vous faire ?")) < n)
                 {
                     this.connexion.ecrire(Connexion.VRAI);
-                    MENU.get(sous_menu).executer(MESSAGES, this.connexion, this.utilisateur);
+                    MENU.get(sous_menu).ouvrir(MESSAGES, this.connexion, this.utilisateur);
                 }
                 this.connexion.ecrire(Connexion.VRAI);
             }
