@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import bri.serveur.Console;
+
 /**
  * Sur-couche au Socket natif de Java.
  * Il implémente des fonctions utilitaires qui facilitent les échanges client-serveur.
@@ -140,11 +142,17 @@ public class Connexion
     /**
      * Ecriture des instructions de demande d'un fichier dans la sortie et lecture de la réponse.
      * @param message Message associé à la demande.
-     * @return Contenu lu sur l'entrée.
+     * @return Contenu lu sur l'entrée, sous form de tableau.
      * @throws IOException Impossible de finaliser la demande.
      */
-    public final String demander_fichier(final String message) throws IOException
-    { return demander(FICHIER + "\n" + message); }
+    public final String[] demander_fichier(final String message) throws IOException
+    { 
+        this.sortie.println(DEMANDE);
+        this.sortie.println(FICHIER);
+        this.sortie.println(message);
+        this.sortie.flush();
+        return this.lire_tableau();
+    }
     /**
      * Ecriture dans la sortie des instructions de selection dans un tableau et lecture de la réponse.
      * Le tableau de choix est étendu en menu (ajout d'un choix de retour en fin de tableau).

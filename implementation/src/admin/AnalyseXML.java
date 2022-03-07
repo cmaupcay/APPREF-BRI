@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.URLClassLoader;
 
 import bri.Connexion;
+import bri.serveur.Console;
 import bri.serveur.service.IServiceBRI;
 
 /**
@@ -35,7 +36,11 @@ public class AnalyseXML implements IServiceBRI
     @Override
     public final void run()
     {
-        // TODO Implémentation
-        this.connexion.ecrire("| ERREUR | Service non implémenté.");   
+        try
+        {
+            final String[] xml = this.connexion.demander_fichier("Fichier XML : ");
+            this.connexion.ecrire(Connexion.VRAI);
+        }
+        catch (IOException e) { e.printStackTrace(); }
     }
 }

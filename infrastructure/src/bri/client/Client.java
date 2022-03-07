@@ -1,9 +1,15 @@
 package bri.client;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 import bri.Connexion;
 import bri.client.mode.Amateur;
@@ -50,21 +56,46 @@ public class Client
             Console.afficher("| ERREUR | Impossible de charger les éléments distants : " + e.getMessage());
             return false;
         }
-        if (elements == null)   // Demande d'une ligne
+        if (elements == null)
         {
             message = connexion.tampon();
             if (message.equals(Connexion.FICHIER)) // Demande d'un fichier
             {
-                // TODO Demande de fichier
-                // try { Console.demander(connexion.lire(), false); }
-                // catch (IOException e)
-                // {
-                //     Console.afficher("| ERREUR | Impossible de lire le message associé à la demande : " + e.getMessage());
-                //     return false;
-                // }
-                // String fichier = 
+                String chemin = null;
+                try { chemin = Console.demander(connexion.lire(), false); }
+                catch (IOException e)
+                {
+                    Console.afficher("| ERREUR | Impossible de lire le message associé à la demande : " + e.getMessage());
+                    return false;
+                }
+                final File fichier = new File(chemin);
+                if (fichier.exists())
+                {
+                    try
+                    {
+                        // Lecture du contenu du fichier.
+                        final BufferedReader lecteur = new BufferedReader(new FileReader(fichier));
+                        String ligne;
+                        List<String> contenu = new ArrayList<>();
+                        while ((ligne = lecteur.readLine()) != null) contenu.add(ligne);
+                        lecteur.close();
+                        // Envoi du contenu sous forme de tableau.
+                        connexion.ecrire(contenu.toArray());
+                        Console.afficher("Fichier transmis.");
+                    }
+                    catch (IOException e)
+                    { 
+                        Console.afficher("| ERREUR | Impossible de lire le fichier '" + chemin + "' : " + e.getMessage());
+                        return false;
+                    }
+                }
+                else
+                {
+                    Console.afficher("| ERREUR | Le fichier '" + chemin + "' est introuvable.");
+                    return false;
+                }
             }
-            else connexion.ecrire(Console.demander(message, true));
+            else connexion.ecrire(Console.demander(message, true)); // Demande d'une ligne
         }
         else                    // Demande d'un index dans le tableau reçu
         {
@@ -126,6 +157,6 @@ public class Client
         catch (UnknownHostException e)
         { Console.afficher("| ERREUR | Impossible de résoudre le nom d'hôte du serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
         catch (IOException e)
-        { Console.afficher("| ERREUR |Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
+        { Console.afficher("| ERREUR | Impossible de se connecter au serveur BRI (" + SERVEUR + ':' + mode.port() + ")."); }
     }   
 }
