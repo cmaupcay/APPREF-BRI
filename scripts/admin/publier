@@ -29,7 +29,7 @@ then
     exit
 fi
 
-echo "Création du fichier JAR pour le service admin/Messagerie..."
+echo "Création du fichier JAR pour le service admin.Messagerie..."
 cd $SOURCE
 jar --create --file Messagerie.jar admin/Messagerie.class admin/messagerie
 if [ ! $? -eq 0 ]

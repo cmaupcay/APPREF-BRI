@@ -1,0 +1,66 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="bri">
+        <xs:complexType>
+            <xs:sequence>
+                
+                <xs:element name="utilisateurs">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="programmeurs">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="programmeur" type="Programmeur" minOccurs="1" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="amateurs">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="amateur" type="Utilisateur" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="services">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="service" type="Service" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="Utilisateur">
+        <xs:sequence>
+            <xs:element type="xs:string" name="nom"/>
+        </xs:sequence>
+        <xs:attribute type="xs:positiveInteger" name="id"/>
+    </xs:complexType>
+
+    <xs:complexType name="Programmeur">
+        <xs:complexContent>
+            <xs:extension base="Utilisateur">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="ftp"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Service">
+        <xs:sequence>
+            <xs:element type="xs:string" name="nom"/>
+            <xs:element type="xs:string" name="description"/>
+        </xs:sequence>
+        <xs:attribute type="xs:positiveInteger" name="id_auteur"/>
+        <xs:attribute type="xs:string" name="version"/>
+    </xs:complexType>
+
+</xs:schema>

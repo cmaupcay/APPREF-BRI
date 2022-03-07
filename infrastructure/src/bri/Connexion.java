@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import bri.serveur.Console;
-
 /**
  * Sur-couche au Socket natif de Java.
  * Il implémente des fonctions utilitaires qui facilitent les échanges client-serveur.
@@ -95,18 +93,22 @@ public class Connexion
      */
     public final String[] lire_tableau() throws IOException
     {
-        if (this.lire().equals(TABLEAU))
+        try
         {
-            try
+            if (this.lire().equals(TABLEAU))
             {
-                final int n = Integer.parseInt(this.lire());
-                String[] tableau = new String[n];
-                for (int o = 0; o < n; o++)
-                    tableau[o] = this.lire();
-                return tableau;
+                try
+                {
+                    final int n = Integer.parseInt(this.lire());
+                    String[] tableau = new String[n];
+                    for (int o = 0; o < n; o++)
+                        tableau[o] = this.lire();
+                    return tableau;
+                }
+                catch (NumberFormatException e) {}
             }
-            catch (NumberFormatException e) {}
         }
+        catch (NullPointerException e) {}
         return null;
     }
     /**
@@ -142,7 +144,7 @@ public class Connexion
     /**
      * Ecriture des instructions de demande d'un fichier dans la sortie et lecture de la réponse.
      * @param message Message associé à la demande.
-     * @return Contenu lu sur l'entrée, sous form de tableau.
+     * @return Contenu lu sur l'entrée, sous la forme d'un tableau.
      * @throws IOException Impossible de finaliser la demande.
      */
     public final String[] demander_fichier(final String message) throws IOException

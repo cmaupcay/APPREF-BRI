@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bri>
+    <utilisateurs>
+        <programmeurs>
+            <programmeur id="1">
+                <nom>admin</nom>
+                <ftp>localhost:2121</ftp>
+            </programmeur>
+        </programmeurs>
+
+        <amateurs>
+            <amateur id="2">
+                <nom>amateur</nom>
+            </amateur>
+        </amateurs>
+    </utilisateurs>
+
+    <services>
+        <service version="alpha" id_auteur="1">
+            <nom>AnalyseXML</nom>
+            <description>
+                Analyse d'un fichier XML distant selon un schéma XSD distant.
+            </description>
+        </service>
+
+        <service version="1.0.0" id_auteur="1">
+            <nom>Inversion</nom>
+            <description>
+                Inverse les messages reçus.
+            </description>
+        </service>
+
+        <service version="1.0.0" id_auteur="1">
+            <nom>Messagerie</nom>
+            <description>
+                Messagerie textuelle entre les utilisateurs BRI.
+            </description>
+        </service>
+    </services>
+</bri>
