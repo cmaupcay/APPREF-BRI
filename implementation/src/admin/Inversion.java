@@ -12,6 +12,9 @@ import bri.serveur.service.IServiceBRI;
  */
 public class Inversion implements IServiceBRI
 {
+    /** Version du service BRI. */
+    public static final String VERSION = "alpha";
+
     static
     {
         // Fermeture du chargement depuis l'URL, indispensable pour un rechargement du service.
@@ -35,6 +38,7 @@ public class Inversion implements IServiceBRI
     @Override
     public final void run()
     {
+        this.connexion.ecrire("Inversion - version " + VERSION);
         try
         {
             // Boucle de question-réponse.

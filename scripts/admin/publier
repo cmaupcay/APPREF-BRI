@@ -5,16 +5,17 @@
 INITIAL=$PWD
 cd $(dirname $0)
 SOURCE=$(realpath "../../implementation/bin")
-DESTINATION=$(realpath "../../apache-ftpserver/res/home/admin")
+DESTINATION=$(realpath "../../implementation/ftp")
+FTP=$(realpath "../../apache-ftpserver/res/home")
 
 if [ -d $DESTINATION ]
 then
     rm -rf $DESTINATION
 fi
-mkdir $DESTINATION
+mkdir -p $DESTINATION
 
 echo "Copie du service admin.Inversion..."
-cp $SOURCE/admin/Inversion.class $DESTINATION
+cp $SOURCE/admin/Inversion.class $DESTINATION/
 if [ ! $? -eq 0 ]
 then
     echo "La copie du fichier a échoué."
@@ -22,7 +23,7 @@ then
 fi
 
 echo "Copie du service admin.AnalyseXML..."
-cp $SOURCE/admin/AnalyseXML.class $DESTINATION
+cp $SOURCE/admin/AnalyseXML.class $DESTINATION/
 if [ ! $? -eq 0 ]
 then
     echo "La copie du fichier a échoué."
@@ -40,7 +41,15 @@ fi
 mv Messagerie.jar $DESTINATION/Messagerie.jar
 if [ ! $? -eq 0 ]
 then
-    echo "Le déplacement du fichier JAR sur le serveur a échoué."
+    echo "Le déplacement du fichier JAR a échoué."
+    exit
+fi
+
+echo "Déplacement des binaires sur le serveur FTP..."
+cp -r $DESTINATION $FTP/
+if [ ! $? -eq 0 ]
+then
+    echo "Le déplacement sur le serveur a échoué."
     exit
 fi
 
